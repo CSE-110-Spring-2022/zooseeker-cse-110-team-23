@@ -1,2 +1,5 @@
-package com.example.zooseeker;public class AnimalListAdapter {
+package com.example.zooseeker;
+
+public class AnimalListAdapter {
+
 }

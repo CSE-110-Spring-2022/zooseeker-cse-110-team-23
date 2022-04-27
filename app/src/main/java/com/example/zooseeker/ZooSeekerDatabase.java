@@ -1,2 +1,5 @@
-package com.example.zooseeker;public class ZooSeekerDatabase {
+package com.example.zooseeker;
+
+public class ZooSeekerDatabase {
+
 }
