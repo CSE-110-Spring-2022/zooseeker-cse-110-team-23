@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.zooseeker.AnimalListActivity;
 
@@ -28,8 +30,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, AnimalListActivity.class);
-        startActivity(intent);
+        Button addAnimalsButton = findViewById(R.id.addanimals);
+        addAnimalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
+                finish();
+            }
+        });
 
 //        //Create graph
 //        Graph<String, DefaultWeightedEdge> g = null;
