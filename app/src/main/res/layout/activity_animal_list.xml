@@ -8,14 +8,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/animal_list"
-        android:layout_width="413dp"
-        android:layout_height="595dp"
+        android:layout_width="402dp"
+        android:layout_height="541dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintVertical_bias="0.271" />
 
     <EditText
         android:id="@+id/search_text"
@@ -40,32 +40,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.947" />
 
-    <TextView
-        android:id="@+id/counter_text"
-        android:layout_width="295dp"
-        android:layout_height="105dp"
-        android:layout_marginTop="105dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="607dp"
-        android:hint="count"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/animal_list"
-        app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.813" />
-
     <Button
-        android:id="@+id/mic_button"
+        android:id="@+id/mic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="71dp"
-        android:text="mic"
-        app:layout_constraintBottom_toTopOf="@+id/animal_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search_text"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="MIC"
+        tools:layout_editor_absoluteX="300dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_pop_up"
+        android:layout_width="337dp"
+        android:layout_height="285dp"
+        android:layout_marginEnd="7dp"
+        app:layout_constraintEnd_toEndOf="@+id/animal_list"
+        app:layout_constraintTop_toTopOf="@+id/animal_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
