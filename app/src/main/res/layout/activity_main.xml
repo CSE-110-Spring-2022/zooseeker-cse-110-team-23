@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/search_bar"
         android:layout_width="249dp"
@@ -82,4 +83,17 @@
         app:layout_constraintVertical_bias="0.189"
         app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
 
+=======
+    <Button
+        android:id="@+id/addanimals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Animals"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="341dp" />
+>>>>>>> 51145135bd957c5a0fa44a896e873ceab09d887f
 </androidx.constraintlayout.widget.ConstraintLayout>
