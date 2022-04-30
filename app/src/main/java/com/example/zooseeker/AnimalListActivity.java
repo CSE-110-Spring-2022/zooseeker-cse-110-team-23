@@ -12,9 +12,9 @@ public class AnimalListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_animal_list);
+        setContentView(R.layout.activity_plan_visit);
 
-        List<AnimalListItem> todos = AnimalListItem.loadJSON(this, "sample_exhibits.json");
-        Log.d("AnimalListActivity", todos.toString());
+//        List<AnimalListItem> todos = AnimalListItem.loadJSON();
+//        Log.d("AnimalListActivity", todos.toString());
     }
 }

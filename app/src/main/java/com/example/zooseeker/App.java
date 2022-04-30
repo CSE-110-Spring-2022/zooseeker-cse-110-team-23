@@ -32,5 +32,5 @@ public class App {
                     vInfo.get(g.getEdgeTarget(e).toString()).name);
             i++;
         }
-    }
+   }
 }
