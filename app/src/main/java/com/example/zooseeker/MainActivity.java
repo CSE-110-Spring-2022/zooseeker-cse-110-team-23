@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(this, TestJSONActivity.class);
 //        startActivity(intent);
+        //hello
 
         Button addAnimalsButton = findViewById(R.id.plan_btn);
         addAnimalsButton.setOnClickListener(new View.OnClickListener() {
