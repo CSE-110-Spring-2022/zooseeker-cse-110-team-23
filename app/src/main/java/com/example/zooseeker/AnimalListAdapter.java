@@ -17,11 +17,16 @@ import java.util.function.Consumer;
 
 public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.ViewHolder> {
     private List<AnimalListItem> animalItems = Collections.emptyList();
+    private BiConsumer<AnimalListItem, String> onTextEditedHandler;
 
     public void setAnimalListItems(List<AnimalListItem> newTodoItems) {
         this.animalItems.clear();
         this.animalItems = newTodoItems;
         notifyDataSetChanged();
+    }
+
+    public void setOnTextEditedHandler(BiConsumer<AnimalListItem, String> onTextEdited) {
+        this.onTextEditedHandler = onTextEdited;
     }
 
     @NonNull
@@ -53,6 +58,12 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.animal_item_text);
+
+            this.textView.setOnFocusChangeListener((view, hasFocus) -> {
+                if (!hasFocus) {
+                    onTextEditedHandler.accept(animalItem, textView.getText().toString());
+                }
+            });
         }
 
         public AnimalListItem getAnimalItem() {
