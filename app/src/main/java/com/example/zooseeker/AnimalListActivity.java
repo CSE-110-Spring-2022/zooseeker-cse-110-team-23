@@ -1,6 +1,7 @@
 package com.example.zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,13 +18,14 @@ public class AnimalListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_visit);
 
+        AnimalListViewModel viewModel = new ViewModelProvider(this)
+                .get(AnimalListViewModel.class);
+
         AnimalListAdapter adapter = new AnimalListAdapter();
-        adapter.setHasStableIds(true);
+        viewModel.getAnimalListItems().observe(this, adapter::setAnimalListItems);
 
         recyclerView = findViewById(R.id.animal_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        adapter.setAnimalListItems(AnimalListItem.loadJSON(this, "sample_animal_list.json"));
     }
 }
