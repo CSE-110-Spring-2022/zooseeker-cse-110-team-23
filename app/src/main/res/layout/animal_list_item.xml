@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="70dp">
 
     <EditText
-        android:id="@+id/animal_text"
+        android:id="@+id/animal_item_text"
         android:layout_width="218dp"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
         android:layout_marginEnd="14dp"
         android:hint="The Animal"
@@ -16,9 +16,10 @@
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/distance"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.52" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -27,7 +28,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/animal_text"
+        app:layout_constraintEnd_toStartOf="@+id/animal_item_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />

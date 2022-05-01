@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,46 +17,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, TestJSONActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, TestJSONActivity.class);
+//        startActivity(intent);
 
-        //Button addAnimalsButton = findViewById(R.id.addanimals);
-//        addAnimalsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
-//                finish();
-//            }
-//        });
-
-//        //Create graph
-//        Graph<String, DefaultWeightedEdge> g = null;
-//        try {
-//            //Reads in graph from JSON file
-//            g = createGraphFromJSON(this,"sample_graph.json");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        //Tests the generated graph against a shortest algorithm function from jgrpaht
-//        calculateShortestPath(g);
+        Button addAnimalsButton = findViewById(R.id.plan_btn);
+        addAnimalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
+                finish();
+            }
+        });
     }
-
-//    public void calculateShortestPath(Graph<String, DefaultWeightedEdge> g) {
-//        GraphPath<String, DefaultWeightedEdge> shortest_path = DijkstraShortestPath.findPathBetween(g, "entranceExitGate1", "arcticFoxViewpoint");
-//        System.out.println("Shortest path from entranceExitGate1 to arcticFoxViewpoint: \n" + shortest_path.toString());
-//    }
-//
-//    public static Graph<String, DefaultWeightedEdge> createGraphFromJSON(Context context, String path) throws IOException {
-//        Graph<String, DefaultWeightedEdge> g = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
-//
-//        JSONImporter<String, DefaultWeightedEdge> jsonImporter = new JSONImporter<>();
-//        jsonImporter.setVertexFactory(label -> label);
-//
-//        InputStream input = context.getAssets().open(path);
-//        Reader reader = new InputStreamReader(input);
-//        jsonImporter.importGraph(g, reader);
-//
-//        return g;
-//    }
 }

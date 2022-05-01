@@ -14,84 +14,45 @@ import java.util.stream.Collectors;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+@Entity(tableName = "animal_list_items")
 public class AnimalListItem {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
     @NonNull
-    public String kind;
-    public String name;
-    public List<String> tags;
+    public String text;
+    public boolean completed;
+    public int order;
 
-    AnimalListItem(String name, String kind, List<String> tags) {
-        this.name = name;
-        this.kind = kind;
-        this.tags = tags;
+    AnimalListItem(String text, boolean completed, int order) {
+        this.text = text;
+        this.completed = completed;
+        this.order = order;
     }
 
     public static List<AnimalListItem> loadJSON(Context context, String path) {
         try {
-            InputStream inputStream = context.getAssets().open(path);
-            Reader reader = new InputStreamReader(inputStream);
-
+            InputStream input = context.getAssets().open(path);
+            Reader reader = new InputStreamReader(input);
             Gson gson = new Gson();
-            Type type = new TypeToken<List<ZooData.VertexInfo>>() {
-            }.getType();
-            List<ZooData.VertexInfo> zooData = gson.fromJson(reader, type);
-
-            // This code is equivalent to:
-            //
-            // Map<String, ZooData.VertexInfo> indexedZooData = new HashMap();
-            // for (ZooData.VertexInfo datum : zooData) {
-            //   indexedZooData[datum.id] = datum;
-            // }
-            //
-            Map<String, ZooData.VertexInfo> indexedZooData = zooData
-                    .stream()
-                    .collect(Collectors.toMap(v -> v.id, datum -> datum));
-
-            //List<AnimalListItem> theList = Collections.emptyList();
-            List<AnimalListItem> theList = new ArrayList<AnimalListItem>(10);
-
-            Map<String, ZooData.VertexInfo> vInfo = indexedZooData;
-            //ZooData.loadVertexInfoJSON("sample_node_info.json");
-
-            for (String name : vInfo.keySet()) {
-                AnimalListItem animal = new AnimalListItem(vInfo.get(name).name, vInfo.get(name).kind.toString(), vInfo.get(name).tags);
-                theList.add(animal);
-            }
-            return theList;
-        }
-        catch (IOException e) {
+            Type type = new TypeToken<List<AnimalListItem>>(){}.getType();
+            return gson.fromJson(reader, type);
+        } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
-
     }
-
-
-//    public static List<AnimalListItem> loadJSON(Context context, String path) {
-//        try {
-//            InputStream input = context.getAssets().open(path);
-//            Reader reader = new InputStreamReader(input);
-//            Gson gson = new Gson();
-//            Type type = new TypeToken<List<AnimalListItem>>(){}.getType();
-//            return gson.fromJson(reader, type);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return Collections.emptyList();
-//        }
-//    }
 
     @Override
     public String toString() {
         return "AnimalListItem{" +
-                //"id=" + id +
-                ", kind='" + kind + '\'' +
-                ", name='" + name + '\'' +
-                ", tags=" + tags +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", completed=" + completed +
+                ", order=" + order +
                 '}';
     }
 }

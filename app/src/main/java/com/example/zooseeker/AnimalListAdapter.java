@@ -3,28 +3,25 @@ package com.example.zooseeker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.ViewHolder> {
     private List<AnimalListItem> animalItems = Collections.emptyList();
 
-
-    public void setNewAnimalListItems(List<AnimalListItem> newAnimalListItems) {
+    public void setAnimalListItems(List<AnimalListItem> newTodoItems) {
         this.animalItems.clear();
-        this.animalItems = newAnimalListItems;
+        this.animalItems = newTodoItems;
         notifyDataSetChanged();
-//        this.animalListItem = animalListItem;
-//        //this.id.setText(Long.toString(animalListItem.id));
-//        this.kind.setText(animalListItem.kind);
-//        this.name.setText(animalListItem.name);
-//        this.tag.setText(animalListItem.tags.toString());
     }
 
     @NonNull
@@ -32,45 +29,39 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.activity_test_json_animal_item, parent, false);
-
+                .inflate(R.layout.animal_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setAnimalListItem(animalItems.get(position));
+        holder.setAnimalItem(animalItems.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return animalItems.size();
     }
 
+    @Override
+    public long getItemId(int position) { return animalItems.get(position).id;}
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        //private final TextView id;
-        private final TextView kind;
-        private final TextView name;
-        private final TextView tag;
-        private AnimalListItem animalListItem;
-
+        private final TextView textView;
+        private AnimalListItem animalItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //this.id = itemView.findViewById(R.id.test_animal_id);
-            this.kind = itemView.findViewById(R.id.test_animal_kind);
-            this.name = itemView.findViewById(R.id.test_animal_name);
-            this.tag = itemView.findViewById(R.id.test_animal_tag);
+            this.textView = itemView.findViewById(R.id.animal_item_text);
         }
 
-        public void setAnimalListItem(AnimalListItem animalItem) {
-            this.animalListItem = animalItem;
-            this.kind.setText(animalListItem.kind);
-            this.name.setText(animalListItem.name);
-            this.tag.setText(animalListItem.tags.toString());
+        public AnimalListItem getAnimalItem() {
+            return animalItem;
+        }
+
+        public void setAnimalItem(AnimalListItem todoItem) {
+            this.animalItem = todoItem;
+            this.textView.setText(todoItem.text);
         }
     }
-
-
 }
