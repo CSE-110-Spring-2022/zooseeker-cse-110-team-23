@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
-public class TodoDatabaseTest {
+public class AnimalDatabaseTest {
     private AnimalListItemDao dao;
     private AnimalListDatabase db;
 
@@ -36,8 +36,8 @@ public class TodoDatabaseTest {
 
     @Test
     public void testInsert() {
-        AnimalListItem item1 = new AnimalListItem("Pizza time", false, 0);
-        AnimalListItem item2 = new AnimalListItem("Photos of Spider-Man", false, 1);
+        AnimalListItem item1 = new AnimalListItem("Zebra", false, 0);
+        AnimalListItem item2 = new AnimalListItem("Elephant", false, 1);
 
         long id1 = dao.insert(item1);
         long id2 = dao.insert(item2);
@@ -47,7 +47,7 @@ public class TodoDatabaseTest {
 
     @Test
     public void testGet() {
-        AnimalListItem insertedItem = new AnimalListItem("Pizza time", false, 0);
+        AnimalListItem insertedItem = new AnimalListItem("Giraffe", false, 0);
         long id = dao.insert(insertedItem);
 
         AnimalListItem item = dao.get(id);
@@ -59,22 +59,22 @@ public class TodoDatabaseTest {
 
     @Test
     public void testUpdate () {
-        AnimalListItem item = new AnimalListItem ("Pizza time",false,0);
+        AnimalListItem item = new AnimalListItem ("Lion",false,0);
         long id = dao.insert(item);
 
         item = dao.get(id);
-        item.text = "Photos of Spider-Man";
+        item.text = "African Lion";
         int itemsUpdated = dao.update(item);
         assertEquals (1, itemsUpdated) ;
 
         item = dao.get(id);
         assertNotNull(item);
-        assertEquals ("Photos of Spider- Man", item.text) ;
+        assertEquals ("African Lion", item.text) ;
     }
 
     @Test
     public void testDelete () {
-        AnimalListItem item = new AnimalListItem("Pizza time", false, 0);
+        AnimalListItem item = new AnimalListItem("Rhinoceros", false, 0);
         Long id = dao.insert(item);
         item = dao.get(id);
         int itemsDeleted = dao.delete(item);
