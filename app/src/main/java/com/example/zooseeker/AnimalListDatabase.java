@@ -42,4 +42,11 @@ public abstract class AnimalListDatabase extends RoomDatabase {
                 })
                 .build();
     }
+
+    @VisibleForTesting
+    public static void injectTestDatabase(AnimalListDatabase testDatabase) {
+        if(singleton != null) {
+            singleton.close();
+        }
+    }
 }
