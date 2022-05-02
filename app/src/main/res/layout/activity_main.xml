@@ -9,14 +9,14 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/search_bar"
         android:layout_width="249dp"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
         android:hint="Search the animal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.129"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.198" />
 
     <ImageButton
         android:id="@+id/search_voice_btn"
@@ -28,7 +28,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.188"
-        app:srcCompat="@android:drawable/ic_btn_speak_now" />
+        app:srcCompat="@android:drawable/ic_btn_speak_now"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/your_list"
@@ -68,7 +69,8 @@
         app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305" />
+        app:layout_constraintVertical_bias="0.305"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/search_btn"
@@ -80,6 +82,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.189"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        tools:ignore="SpeakableTextPresentCheck" /><![CDATA[
 
+=======
+    >>>>>>> 51145135bd957c5a0fa44a896e873ceab09d887f
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
