@@ -1,6 +1,7 @@
 package com.example.zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,9 @@ import java.util.Map;
 
 public class TestJSONActivity extends AppCompatActivity {
 
+
+    public AnimalListViewModel viewModel;
+
     public RecyclerView recyclerView;
     public Button btn;
 
@@ -22,6 +26,9 @@ public class TestJSONActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_jsonacitivity);
+
+        viewModel = new ViewModelProvider(this)
+                .get(AnimalListViewModel.class);
 
         AnimalListAdapter adapter = new AnimalListAdapter();
         adapter.setHasStableIds(true);
