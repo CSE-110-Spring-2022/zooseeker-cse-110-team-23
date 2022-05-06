@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this)
                 .get(AnimalListViewModel.class);
-
         viewModel.setSize(this);
     }
 
@@ -66,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < animalParse.size(); i++) {
             if(animalParse.get(i).name.equals(text)) {
                 searchBar.setText("");
+                confirmText.setText("The animal you searched for is added into your planner.");
                 viewModel.createTodo(text);
+                viewModel.setSize(this);
                 break;
             }
             for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
