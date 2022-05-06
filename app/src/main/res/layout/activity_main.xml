@@ -62,7 +62,7 @@
         android:layout_height="40dp"
         android:ems="10"
         android:inputType="numberSigned"
-        android:text="0"
+        android:text="2"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

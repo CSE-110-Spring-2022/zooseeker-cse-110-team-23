@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(AnimalListViewModel.class);
 
-//        viewModel.setSize(this);
+        viewModel.setSize(this);
     }
 
     void onAddClicked(View view) {

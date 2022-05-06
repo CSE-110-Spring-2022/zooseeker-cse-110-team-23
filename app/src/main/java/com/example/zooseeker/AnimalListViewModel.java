@@ -45,6 +45,7 @@ public class AnimalListViewModel extends AndroidViewModel {
 
     public void setSize(MainActivity view) {
         EditText listCounter = view.findViewById(R.id.list_counter);
-        listCounter.setText(animalListItemDao.getSize());
+        String s = Integer.toString(animalListItemDao.getSize());
+        listCounter.setText(s);
     }
 }
