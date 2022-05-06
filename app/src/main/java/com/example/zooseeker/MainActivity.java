@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     void onAddClicked(View view) {
         String text = searchBar.getText().toString();
+        String suggestion = "";
         confirmText.setText("The animal you searched for is not in the zoo.");
         for(int i = 0; i < animalParse.size(); i++) {
             if(animalParse.get(i).name.equals(text)) {
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
             for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
                 if (animalParse.get(i).tags.get(j).equals(text)) {
-                    confirmText.setText("Did you search for " + animalParse.get(i).name + " ?");
+                    suggestion += animalParse.get(i).name + ", ";
+                    confirmText.setText("Did you search for " + suggestion + " ?");
                     break;
                 }
             }
