@@ -34,4 +34,7 @@ public interface AnimalListItemDao {
 
     @Query("SELECT `order` + 1 FROM `animal_list_items` ORDER BY `order` DESC LIMIT 1")
     int getOrderForAppend();
+
+    @Query("SELECT COUNT(*) FROM `animal_list_items`")
+    int getSize();
 }

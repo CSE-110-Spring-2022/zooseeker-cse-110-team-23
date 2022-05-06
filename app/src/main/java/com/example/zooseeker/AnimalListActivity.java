@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ public class AnimalListActivity extends AppCompatActivity {
     public AnimalListViewModel viewModel;
     private EditText newTodoText;
     private Button addTodoButton;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,15 @@ public class AnimalListActivity extends AppCompatActivity {
         this.addTodoButton = this.findViewById(R.id.add_todo_btn);
 
         addTodoButton.setOnClickListener(this::onAddTodoClicked);
+
+        backButton = findViewById(R.id.back_search);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AnimalListActivity.this, MainActivity.class));
+                finish();
+            }
+        });
     }
 
     void onAddTodoClicked(View view) {

@@ -27,7 +27,7 @@ public abstract class AnimalListDatabase extends RoomDatabase {
     }
 
     private static AnimalListDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder (context, AnimalListDatabase.class, "todo_app.db")
+        return Room.databaseBuilder (context, AnimalListDatabase.class, "animal_planner.db")
                 .allowMainThreadQueries()
                 .addCallback(new Callback() {
                     @Override

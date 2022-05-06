@@ -2,6 +2,7 @@ package com.example.zooseeker;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -40,5 +41,10 @@ public class AnimalListViewModel extends AndroidViewModel {
         int endOfListOrder = animalListItemDao.getOrderForAppend();
         AnimalListItem newItem = new AnimalListItem(text, false, endOfListOrder);
         animalListItemDao.insert(newItem);
+    }
+
+    public void setSize(MainActivity view) {
+        EditText listCounter = view.findViewById(R.id.list_counter);
+        listCounter.setText(animalListItemDao.getSize());
     }
 }
