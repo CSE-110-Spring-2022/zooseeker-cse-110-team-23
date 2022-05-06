@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchBar;
     private List<GraphListItem> animalParse;
     public AnimalListViewModel viewModel;
-    private EditText listCounter;
+    private TextView confirmText;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.searchButton = this.findViewById(R.id.search_btn);
         this.searchBar = findViewById(R.id.search_bar);
+        this.confirmText = findViewById(R.id.confirmText);
 
         GraphListAdapter adapter = new GraphListAdapter();
         adapter.setHasStableIds(true);
@@ -60,11 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
     void onAddClicked(View view) {
         String text = searchBar.getText().toString();
+        confirmText.setText("The animal you searched for is not in the zoo.");
         for(int i = 0; i < animalParse.size(); i++) {
             if(animalParse.get(i).name.equals(text)) {
                 searchBar.setText("");
                 viewModel.createTodo(text);
                 break;
+            }
+            for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
+                if (animalParse.get(i).tags.get(j).equals(text)) {
+                    confirmText.setText("Did you search for " + animalParse.get(i).name + " ?");
+                    break;
+                }
             }
         }
     }
