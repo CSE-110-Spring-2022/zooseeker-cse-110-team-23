@@ -44,9 +44,12 @@ public class GraphListAdapter extends RecyclerView.Adapter<GraphListAdapter.View
 
     @Override
     public int getItemCount() {
-        return 0;
+        return graphItems.size();
     }
 
+    public List<GraphListItem> getGraphItems() {
+        return graphItems;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //private final TextView id;

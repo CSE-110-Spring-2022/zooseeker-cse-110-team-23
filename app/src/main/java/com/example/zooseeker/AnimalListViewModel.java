@@ -43,6 +43,10 @@ public class AnimalListViewModel extends AndroidViewModel {
         animalListItemDao.insert(newItem);
     }
 
+    public void deleteAnimal(AnimalListItem animalListItem) {
+        animalListItemDao.delete(animalListItem);
+    }
+
     public void setSize(MainActivity view) {
         EditText listCounter = view.findViewById(R.id.list_counter);
         String s = Integer.toString(animalListItemDao.getSize());

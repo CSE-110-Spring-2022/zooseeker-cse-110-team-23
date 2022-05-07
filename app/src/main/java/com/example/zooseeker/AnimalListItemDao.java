@@ -12,10 +12,10 @@ import java.util.*;
 @Dao
 public interface AnimalListItemDao {
     @Insert
-    long insert(AnimalListItem todoListItem);
+    long insert(AnimalListItem animalListItem);
 
     @Insert
-    List<Long> insertAll(List<AnimalListItem> todoListItem);
+    List<Long> insertAll(List<AnimalListItem> animalListItem);
 
     @Query("SELECT * FROM `animal_list_items` WHERE `id`=:id")
     AnimalListItem get(long id);
@@ -24,10 +24,13 @@ public interface AnimalListItemDao {
     List<AnimalListItem> getAll();
 
     @Update
-    int update(AnimalListItem todoListItem);
+    int update(AnimalListItem animalListItem);
 
     @Delete
-    int delete(AnimalListItem todoListItem);
+    int delete(AnimalListItem animalListItem);
+
+    @Query("DELETE FROM `animal_list_items`")
+    void nukeTable();
 
     @Query("SELECT * FROM `animal_list_items` ORDER BY `order`")
     LiveData<List<AnimalListItem>> getAllAlive();

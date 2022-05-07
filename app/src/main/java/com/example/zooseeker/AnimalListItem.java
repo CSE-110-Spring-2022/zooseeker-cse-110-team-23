@@ -31,6 +31,7 @@ public class AnimalListItem {
         this.text = text;
         this.completed = completed;
         this.order = order;
+
     }
 
     public static List<AnimalListItem> loadJSON(Context context, String path) {
