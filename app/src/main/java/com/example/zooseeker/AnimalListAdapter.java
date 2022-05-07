@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.ViewHolder> {
     private List<AnimalListItem> animalItems = Collections.emptyList();
     private BiConsumer<AnimalListItem, String> onTextEditedHandler;
+    private Consumer<AnimalListItem> onDeleteButtonClicked;
 
     public void setAnimalListItems(List<AnimalListItem> newTodoItems) {
         this.animalItems.clear();
@@ -27,6 +28,10 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
 
     public void setOnTextEditedHandler(BiConsumer<AnimalListItem, String> onTextEdited) {
         this.onTextEditedHandler = onTextEdited;
+    }
+
+    public void setOnDeleteButtonClicked(Consumer<AnimalListItem> onDeleteButtonClicked) {
+        this.onDeleteButtonClicked = onDeleteButtonClicked;
     }
 
     @NonNull
@@ -54,15 +59,22 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private AnimalListItem animalItem;
+        private Button deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.animal_item_text);
+            this.deleteButton = itemView.findViewById(R.id.delete_btn);
 
             this.textView.setOnFocusChangeListener((view, hasFocus) -> {
                 if (!hasFocus) {
                     onTextEditedHandler.accept(animalItem, textView.getText().toString());
                 }
+            });
+
+            this.deleteButton.setOnClickListener(view -> {
+                if (onDeleteButtonClicked == null) return;
+                onDeleteButtonClicked.accept(animalItem);
             });
         }
 
@@ -74,5 +86,7 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
             this.animalItem = todoItem;
             this.textView.setText(todoItem.text);
         }
+
+
     }
 }

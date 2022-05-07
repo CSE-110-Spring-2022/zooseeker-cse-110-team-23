@@ -1,6 +1,7 @@
 package com.example.zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ public class AnimalListActivity extends AppCompatActivity {
     private EditText newTodoText;
     private Button addTodoButton;
     private Button backButton;
+    private Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,11 @@ public class AnimalListActivity extends AppCompatActivity {
 
         this.newTodoText = this.findViewById(R.id.new_todo_text);
         this.addTodoButton = this.findViewById(R.id.add_todo_btn);
+        this.deleteButton = this.findViewById(R.id.delete_btn);
 
         addTodoButton.setOnClickListener(this::onAddTodoClicked);
+
+        adapter.setOnDeleteButtonClicked(viewModel::deleteAnimal);
 
         backButton = findViewById(R.id.back_search);
         backButton.setOnClickListener(new View.OnClickListener() {

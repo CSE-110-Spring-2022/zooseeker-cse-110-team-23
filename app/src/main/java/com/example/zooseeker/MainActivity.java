@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             }
             for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
                 if (animalParse.get(i).tags.get(j).equals(text)) {
-                    suggestion += animalParse.get(i).name + ", ";
-                    confirmText.setText("Did you search for " + suggestion + " ?");
+                    suggestion += "\n" + animalParse.get(i).name;
+                    confirmText.setText("Did you mean to search for any of the following: " + suggestion);
                     break;
                 }
             }
