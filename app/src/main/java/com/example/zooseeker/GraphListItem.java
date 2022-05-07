@@ -22,13 +22,16 @@ public class GraphListItem {
 
     @NonNull
     public String kind;
+    public String animal_id;
     public String name;
     public List<String> tags;
 
-    GraphListItem(String name, String kind, List<String> tags) {
+    GraphListItem(String name, String animal_id, String kind, List<String> tags) {
         this.name = name;
+        this.animal_id = animal_id;
         this.kind = kind;
         this.tags = tags;
+
     }
 
     public static List<GraphListItem> loadJSON(Context context, String path) {
@@ -59,7 +62,7 @@ public class GraphListItem {
             //ZooData.loadVertexInfoJSON("sample_node_info.json");
 
             for (String name : vInfo.keySet()) {
-                GraphListItem animal = new GraphListItem(vInfo.get(name).name, vInfo.get(name).kind.toString(), vInfo.get(name).tags);
+                GraphListItem animal = new GraphListItem(vInfo.get(name).name, vInfo.get(name).id, vInfo.get(name).kind.toString(), vInfo.get(name).tags);
                 theList.add(animal);
             }
             return theList;
@@ -88,8 +91,9 @@ public class GraphListItem {
     @Override
     public String toString() {
         return "GraphListItem{" +
-                //"id=" + id +
+                "id=" + id +
                 ", kind='" + kind + '\'' +
+                ", animal_id='" + animal_id + '\'' +
                 ", name='" + name + '\'' +
                 ", tags=" + tags +
                 '}';
