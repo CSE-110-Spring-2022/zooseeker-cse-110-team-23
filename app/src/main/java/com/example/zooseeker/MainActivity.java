@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, TestJSONActivity.class);
 //        startActivity(intent);
 
-        addAnimalsButton = findViewById(R.id.plan_btn);
-        addAnimalsButton.setOnClickListener(new View.OnClickListener() {
+        this.addAnimalsButton = findViewById(R.id.plan_btn);
+        this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
