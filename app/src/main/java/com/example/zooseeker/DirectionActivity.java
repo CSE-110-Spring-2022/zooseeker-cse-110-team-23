@@ -45,45 +45,38 @@ public class DirectionActivity extends AppCompatActivity {
 
         log = new ArrayList<>(1);
 
-        String prev = "entrance_exit_gate";     // my code
+        String prev = "entrance_exit_gate";
         for(int i=0; i<animalPlanItems.size(); i++) {
-
             path = DijkstraShortestPath.findPathBetween(g,start, goal);
             int j = 1;
             String b = "";
 
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-                // my code
                 // if the target of next edge is the prev place
                 if(prev == vInfo.get(g.getEdgeTarget(e).toString()).name) {
                     String from = vInfo.get(g.getEdgeTarget(e).toString()).name;
-//                    String from = "deez nuts";
                     String to = vInfo.get(g.getEdgeSource(e).toString()).name;
                     double length = g.getEdgeWeight(e);
                     String street = eInfo.get(e.getId()).street;
 
-                    b += j + ". Walk "+ length +" meters along "+ street +" from "+ from +" to  "+to +"\n";
+                    b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
                     j++;
 
-                    // update prev
+                    // update the name of the previous exhibit
                     prev = to;
                 }
                 else {
                     String from = vInfo.get(g.getEdgeSource(e).toString()).name;
-//                    String from = "deez nuts";
                     String to = vInfo.get(g.getEdgeTarget(e).toString()).name;
                     double length = g.getEdgeWeight(e);
                     String street = eInfo.get(e.getId()).street;
 
-                    b += j + ". Walk "+ length +" meters along "+ street +" from "+ from +" to  "+to +"\n" ;
+                    b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
                     j++;
 
-                    // update prev
+                    // update the name of the previous exhibit
                     prev = to;
                 }
-                // end of my code
-//                b += j + ". Walk "+ length +" meters along "+ street +" from "+ from +" to  "+to +"\n" ;
-//                j++;
             }
             log.add(b);
             start = animalPlanItems.get(i).animal_id;
