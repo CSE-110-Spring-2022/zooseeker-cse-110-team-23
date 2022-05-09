@@ -24,12 +24,12 @@ public class AnimalListItem {
 
     @NonNull
     public String text;
-    public boolean completed;
     public int order;
+    public String animal_id;
 
-    AnimalListItem(String text, boolean completed, int order) {
+    AnimalListItem(String text, String animal_id, int order) {
         this.text = text;
-        this.completed = completed;
+        this.animal_id = animal_id;
         this.order = order;
 
     }
@@ -52,8 +52,8 @@ public class AnimalListItem {
         return "AnimalListItem{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", completed=" + completed +
                 ", order=" + order +
+                ", animal_id='" + animal_id + '\'' +
                 '}';
     }
 }

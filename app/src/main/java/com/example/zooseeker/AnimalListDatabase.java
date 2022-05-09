@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.*;
 import java.util.concurrent.Executors;
 
-@Database(entities = {AnimalListItem.class}, version = 1)
+@Database(entities = {AnimalListItem.class}, version =  1)
 public abstract class AnimalListDatabase extends RoomDatabase {
     private static AnimalListDatabase singleton = null;
 
@@ -27,7 +27,7 @@ public abstract class AnimalListDatabase extends RoomDatabase {
     }
 
     private static AnimalListDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder (context, AnimalListDatabase.class, "animal_planner.db")
+        return Room.databaseBuilder (context, AnimalListDatabase.class, "animal_planner2.db")
                 .allowMainThreadQueries()
                 .addCallback(new Callback() {
                     @Override
@@ -35,7 +35,7 @@ public abstract class AnimalListDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             List<AnimalListItem> todos = AnimalListItem
-                                    .loadJSON(context, "demo_todos.json");
+                                    .loadJSON(context, "sample_node_info.json");
                             getSingleton(context).animalListItemDao().insertAll(todos);
                         });
                     }

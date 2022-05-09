@@ -37,9 +37,9 @@ public class AnimalListViewModel extends AndroidViewModel {
         animalListItemDao.update(animalListItem);
     }
 
-    public void createTodo(String text) {
+    public void createTodo(String text, String text2) {
         int endOfListOrder = animalListItemDao.getOrderForAppend();
-        AnimalListItem newItem = new AnimalListItem(text, false, endOfListOrder);
+        AnimalListItem newItem = new AnimalListItem(text,text2,endOfListOrder);
         animalListItemDao.insert(newItem);
     }
 
