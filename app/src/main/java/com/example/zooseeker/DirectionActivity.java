@@ -93,12 +93,13 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     void onNextAnimalClicked(View view) {
-        if(animalIndex < log.size()) {
+        if(animalIndex < log.size()-1) {
             animalIndex++;
             destination.setText(log.get(animalIndex));
         }
         else {
             nextBtn.setText("DONE");
+            finish();
         }
 
 
