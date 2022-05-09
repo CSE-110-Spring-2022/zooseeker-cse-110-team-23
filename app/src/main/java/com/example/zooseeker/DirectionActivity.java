@@ -34,7 +34,7 @@ public class DirectionActivity extends AppCompatActivity {
 
         String start = "entrance_exit_gate";
         String goal;
-        List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();//this.viewModel.getAnimalListItems().getValue();
+        List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
 
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
         goal = animalPlanItems.get(0).animal_id;        // save first animal in plan as goal
