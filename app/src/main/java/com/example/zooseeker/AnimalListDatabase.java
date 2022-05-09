@@ -34,9 +34,9 @@ public abstract class AnimalListDatabase extends RoomDatabase {
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            List<AnimalListItem> todos = AnimalListItem
+                            List<AnimalListItem> animals = AnimalListItem
                                     .loadJSON(context, "sample_node_info.json");
-                            getSingleton(context).animalListItemDao().insertAll(todos);
+                            getSingleton(context).animalListItemDao().insertAll(animals);
                         });
                     }
                 })
@@ -48,5 +48,6 @@ public abstract class AnimalListDatabase extends RoomDatabase {
         if(singleton != null) {
             singleton.close();
         }
+        singleton = testDatabase;
     }
 }
