@@ -18,6 +18,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -72,14 +73,23 @@ public class MainActivity extends AppCompatActivity {
     void onAddClicked(View view) {
         String text = searchBar.getText().toString();
         String suggestion = "";
+        List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+        List<String> animalPlanItemsString = new ArrayList<String>();
+        for(AnimalListItem a:animalPlanItems) {
+            animalPlanItemsString.add(a.text);
+        }
+
         confirmText.setText("The animal you searched for is not in the zoo.");
         for(int i = 0; i < animalParse.size(); i++) {
-            if(animalParse.get(i).name.equals(text)) {
+            if(animalParse.get(i).name.equals(text) && !animalPlanItemsString.contains(text)) {
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
                 viewModel.createTodo(text,animalParse.get(i).animal_id); // Change it to id
                 viewModel.setSize(this);
                 break;
+            }
+            else if(animalPlanItemsString.contains(text)) {
+                confirmText.setText("Already Added");
             }
             for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
                 if (animalParse.get(i).tags.get(j).equals(text)) {
