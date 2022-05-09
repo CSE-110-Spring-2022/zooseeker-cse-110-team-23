@@ -36,8 +36,8 @@
 //
 //    @Test
 //    public void testInsert() {
-//        AnimalListItem item1 = new AnimalListItem("Zebra", "zebra",0);
-//        AnimalListItem item2 = new AnimalListItem("Elephant", "elephant", 1);
+//        AnimalListItem item1 = new AnimalListItem("Lions", "lions",0);
+//        AnimalListItem item2 = new AnimalListItem("Elephant ", "elephant", 1);
 //
 //        long id1 = dao.insert(item1);
 //        long id2 = dao.insert(item2);

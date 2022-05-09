@@ -38,10 +38,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //AnimalListDatabase.getSingleton(this).animalListItemDao().nukeTable();
-
-//        Intent intent = new Intent(this, TestJSONActivity.class);
-//        startActivity(intent);
 
         this.addAnimalsButton = findViewById(R.id.plan_btn);
         this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
@@ -55,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
         this.searchButton = this.findViewById(R.id.search_btn);
         this.searchBar = findViewById(R.id.search_bar);
         this.confirmText = findViewById(R.id.confirmText);
-
-        GraphListAdapter adapter = new GraphListAdapter();
-        adapter.setHasStableIds(true);
 
         animalParse = GraphListItem.loadJSON(this,"sample_node_info.json");
 

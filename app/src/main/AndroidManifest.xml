@@ -13,9 +13,6 @@
             android:name=".DirectionActivity"
             android:exported="false" />
         <activity
-            android:name=".TestJSONActivity"
-            android:exported="false" />
-        <activity
             android:name=".AnimalListActivity"
             android:exported="false" />
         <activity
