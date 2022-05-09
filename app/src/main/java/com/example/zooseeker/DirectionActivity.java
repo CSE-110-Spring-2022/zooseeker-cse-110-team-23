@@ -2,6 +2,7 @@ package com.example.zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,13 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DirectionActivity extends AppCompatActivity {
+    private static Context context;
     private int animalIndex = 0;
 
     private Button nextBtn;
@@ -24,26 +27,49 @@ public class DirectionActivity extends AppCompatActivity {
 
     private ArrayList<String> log;
 
+    private Graph<String, IdentifiedWeightedEdge> g;
+    private Map<String, ZooData.VertexInfo> vInfo;
+    private Map<String, ZooData.EdgeInfo> eInfo;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
 
+        vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
+        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
+
         nextBtn = findViewById(R.id.next_btn);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
+        List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+        log = planPath(animalPlanItems, vInfo, eInfo, g);
+        destination = findViewById(R.id.destination_text);
+        destination.setText(log.get(animalIndex));
 
+    }
+
+    public static ArrayList<String> planPath(List<AnimalListItem> animalPlanItems,
+                                             Map<String, ZooData.VertexInfo> vInfo,
+                                             Map<String, ZooData.EdgeInfo> eInfo,
+                                             Graph<String, IdentifiedWeightedEdge> g
+                                             ) {
         String start = "entrance_exit_gate";
         String goal;
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+        //this.viewModel.getAnimalListItems().getValue();
 
-        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
+        if(animalPlanItems.size()==0) {
+            return new ArrayList<String>(0);
+        }
         goal = animalPlanItems.get(0).animal_id;        // save first animal in plan as goal
         GraphPath<String, IdentifiedWeightedEdge> path;
 
-        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
-        Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
 
-        log = new ArrayList<>(1);
+
+        ArrayList<String> log = new ArrayList<>(0);
 
         String prev = "entrance_exit_gate";
         for(int i=0; i<animalPlanItems.size(); i++) {
@@ -85,11 +111,7 @@ public class DirectionActivity extends AppCompatActivity {
             }
             goal = animalPlanItems.get(i+1).animal_id;
         }
-        destination = findViewById(R.id.destination_text);
-        //String c = Integer.toString(log.size());
-        destination.setText(log.get(animalIndex));
-
-
+        return log;
     }
 
     void onNextAnimalClicked(View view) {
@@ -103,5 +125,9 @@ public class DirectionActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public static Context getContext() {
+        return DirectionActivity.context;
     }
 }
