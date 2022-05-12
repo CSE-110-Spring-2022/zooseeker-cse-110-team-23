@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         confirmText.setText("The animal you searched for is not in the zoo.");
         for(int i = 0; i < animalParse.size(); i++) {
-            if(animalParse.get(i).name.equals("Entrance Plaza") || animalParse.get(i).name.equals("Entrance and Exit Gate")){
-                confirmText.setText("Please enter the name of the animal.");
-                break;
-            }
             if(animalParse.get(i).name.equals(text) && !animalPlanItemsString.contains(text)) {
+                if("Entrance Plaza".equals(text) || "Entrance and Exit Gate".equals(text)){
+                    confirmText.setText("Please enter the name of the animal.");
+                    break;
+                }
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
                 viewModel.createTodo(text,animalParse.get(i).animal_id); // Change it to id
@@ -90,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
             }
             for(int j = 0; j < animalParse.get(i).tags.size(); j++) {
                 if (animalParse.get(i).tags.get(j).equals(text)) {
+                    if(animalParse.get(i).name.equals("Entrance Plaza") || animalParse.get(i).name.equals("Entrance and Exit Gate")){
+                        confirmText.setText("Please enter the name of the animal.");
+                        break;
+                    }
                     suggestion += "\n" + animalParse.get(i).name;
                     confirmText.setText("Did you mean to search for any of the following: " + suggestion);
                     break;
