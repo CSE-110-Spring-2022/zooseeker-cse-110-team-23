@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,7 +29,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private Button addAnimalsButton;
     private ImageButton searchButton;
-    private EditText searchBar;
+    private AutoCompleteTextView searchBar;
     private List<GraphListItem> animalParse;
     public AnimalListViewModel viewModel;
     private TextView confirmText;
@@ -60,6 +62,18 @@ public class MainActivity extends AppCompatActivity {
                 .get(AnimalListViewModel.class);
         viewModel.setSize(this);
 
+        List<String> animalNames = new ArrayList<>();
+
+        for(int i = 0; i < animalParse.size(); i++) {
+            animalNames.add(animalParse.get(i).name);
+        }
+
+        animalNames.remove("Entrance Plaza");
+        animalNames.remove("Entrance and Exit Gate");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, animalNames);
+        searchBar.setAdapter(adapter);
     }
 
 
