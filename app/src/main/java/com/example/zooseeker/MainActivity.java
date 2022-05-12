@@ -74,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         confirmText.setText("The animal you searched for is not in the zoo.");
         for(int i = 0; i < animalParse.size(); i++) {
+            if(animalParse.get(i).name.equals("Entrance Plaza") || animalParse.get(i).name.equals("Entrance and Exit Gate")){
+                confirmText.setText("Please enter the name of the animal.");
+                break;
+            }
             if(animalParse.get(i).name.equals(text) && !animalPlanItemsString.contains(text)) {
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
