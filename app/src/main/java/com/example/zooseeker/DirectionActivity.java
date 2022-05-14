@@ -45,10 +45,55 @@ public class DirectionActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
-        log = planPath(animalPlanItems, vInfo, eInfo, g);
+        List<AnimalListItem> sortedPath = sortPath(animalPlanItems,g);
+        log = planPath(sortedPath, vInfo, eInfo, g);
         destination = findViewById(R.id.destination_text);
-        destination.setText(log.get(animalIndex));
+        if(log.isEmpty()) {
+            destination.setText("Plan Something");
+        }
+        else {
+            destination.setText(log.get(animalIndex));
+        }
+    }
 
+    public static List<AnimalListItem> sortPath(List<AnimalListItem> unsortedAnimalList,
+                                                Graph<String, IdentifiedWeightedEdge> g) {
+        ArrayList<AnimalListItem> sorted = new ArrayList<>();
+        String start = "entrance_exit_gate";
+        AnimalListItem select = new AnimalListItem("","",0);
+
+        // Empty List
+        if(unsortedAnimalList.isEmpty()){
+            return sorted;
+        }
+
+        GraphPath<String, IdentifiedWeightedEdge> path;
+
+        double min = (double)Integer.MAX_VALUE;
+
+        for(AnimalListItem j : unsortedAnimalList) {
+            // Check which animal to go next
+            for (AnimalListItem a : unsortedAnimalList) {
+                path = DijkstraShortestPath.findPathBetween(g, start, a.animal_id);
+                double length = 0;
+                for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                    length += g.getEdgeWeight(e);
+                }
+                if (length < min && !sorted.contains(a)) {
+                    select = a;
+                    min = length;
+                }
+            }
+            start = select.animal_id;
+            min = (double)Integer.MAX_VALUE;
+
+            // Update sorted
+            sorted.add(select);
+
+        }
+
+
+        return sorted;
     }
 
     public static ArrayList<String> planPath(List<AnimalListItem> animalPlanItems,

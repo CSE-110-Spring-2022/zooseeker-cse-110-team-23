@@ -35,6 +35,7 @@ public class GetDirectionUnitTest {
 //
 //    }
 
+    // PlanPath Test
     @Test
     public void EmptyAnimalList() {
         Context context = ApplicationProvider.getApplicationContext();
@@ -43,7 +44,8 @@ public class GetDirectionUnitTest {
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
         ArrayList<AnimalListItem> theList = new ArrayList<>(0);
 
-        ArrayList<String> log = DirectionActivity.planPath(theList, vInfo, eInfo, g);
+        List<AnimalListItem> theList2 = DirectionActivity.sortPath(theList, g);
+        ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
         assertEquals(log.size(),0);
     }
 
@@ -72,6 +74,41 @@ public class GetDirectionUnitTest {
 
         ArrayList<String> log = DirectionActivity.planPath(theList, vInfo, eInfo, g);
         assertEquals(Integer.valueOf(log.size()),Integer.valueOf(2));
+    }
+
+    //Optimal Path Test
+    @Test
+    public void OneAnimalOptimized() {
+        Context context = ApplicationProvider.getApplicationContext();
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"sample_node_info.json");
+        Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context,"sample_edge_info.json");
+        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
+        ArrayList<AnimalListItem> theList = new ArrayList<>(0);
+        theList.add(new AnimalListItem("Gorillas","gorillas",0));
+
+        List<AnimalListItem> theList2 = DirectionActivity.sortPath(theList, g);
+
+        ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
+        assertEquals(theList2.get(0).animal_id, "gorillas");
+    }
+
+    @Test
+    public void ManyAnimalOptimized() {
+        Context context = ApplicationProvider.getApplicationContext();
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"sample_node_info.json");
+        Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context,"sample_edge_info.json");
+        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
+        ArrayList<AnimalListItem> theList = new ArrayList<>(0);
+        theList.add(new AnimalListItem("Gorillas","gorillas",0));
+        theList.add(new AnimalListItem("Alligators","gators",0));
+        theList.add(new AnimalListItem("Lions","lions",0));
+
+        List<AnimalListItem> theList2 = DirectionActivity.sortPath(theList, g);
+
+        ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
+        assertEquals(theList2.get(0).animal_id, "gators");
+        assertEquals(theList2.get(1).animal_id, "lions");
+        assertEquals(theList2.get(2).animal_id, "gorillas");
     }
 
 }
