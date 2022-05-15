@@ -171,6 +171,16 @@ public class DirectionActivity extends AppCompatActivity {
 
     }
 
+    void onPrevAnimalClicked(View view) {
+        if(animalIndex > 0) {
+            animalIndex--;
+            destination.setText(log.get(animalIndex));
+        }
+        else {
+
+        }
+    }
+
     public static Context getContext() {
         return DirectionActivity.context;
     }
