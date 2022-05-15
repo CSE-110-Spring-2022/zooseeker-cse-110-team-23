@@ -23,6 +23,7 @@ public class DirectionActivity extends AppCompatActivity {
     private int animalIndex = 0;
 
     private Button nextBtn;
+    private Button prevBtn;
     private TextView destination;
 
     private ArrayList<String> log;
@@ -43,6 +44,8 @@ public class DirectionActivity extends AppCompatActivity {
         g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
 
         nextBtn = findViewById(R.id.next_btn);
+        prevBtn = findViewById(R.id.prev_animal_btn );
+        prevBtn.setOnClickListener(this::onPrevAnimalClicked);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
         List<AnimalListItem> sortedPath = sortPath(animalPlanItems,g);
@@ -162,9 +165,13 @@ public class DirectionActivity extends AppCompatActivity {
         if(animalIndex < log.size()-1) {
             animalIndex++;
             destination.setText(log.get(animalIndex));
+            prevBtn.setVisibility(View.VISIBLE);
+        }
+        else if(animalIndex==log.size()-1){
+            nextBtn.setText("DONE");
+            animalIndex++;
         }
         else {
-            nextBtn.setText("DONE");
             finish();
         }
 
@@ -172,12 +179,19 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     void onPrevAnimalClicked(View view) {
-        if(animalIndex > 0) {
+        if(animalIndex == 1) {
+            prevBtn.setVisibility(View.INVISIBLE);
+            animalIndex--;
+            destination.setText(log.get(animalIndex));
+        }
+        else if(animalIndex == log.size()) {
+            nextBtn.setText("Next Animal");
             animalIndex--;
             destination.setText(log.get(animalIndex));
         }
         else {
-
+            animalIndex--;
+            destination.setText(log.get(animalIndex));
         }
     }
 
