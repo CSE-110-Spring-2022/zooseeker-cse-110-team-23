@@ -21,8 +21,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 @RunWith(AndroidJUnit4.class)
 public class PreviousButtonTest {
     @Test
-    public void PreviousButtonTrue() {
+    public void PreviousButton() {
         int Btn = R.id.prev_animal_btn;
+        assertNotNull(Btn);
+    }
+
+    @Test
+    public void NextButtonFunction() {
+        int Btn = R.id.next_btn;
         assertNotNull(Btn);
     }
 }
