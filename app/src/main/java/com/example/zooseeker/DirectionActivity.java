@@ -32,6 +32,7 @@ public class DirectionActivity extends AppCompatActivity {
     private Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
+    private List<AnimalListItem> sortedPath;
 
 
     @Override
@@ -47,11 +48,12 @@ public class DirectionActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         prevBtn = findViewById(R.id.prev_animal_btn );
         skipBtn = findViewById(R.id.skip_next_btn);
+
         prevBtn.setOnClickListener(this::onPrevAnimalClicked);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
         skipBtn.setOnClickListener(this::onSkipAnimalClicked);
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
-        List<AnimalListItem> sortedPath = sortPath(animalPlanItems,g);
+        sortedPath = sortPath(animalPlanItems,g);
         log = planPath(sortedPath, vInfo, eInfo, g);
         destination = findViewById(R.id.destination_text);
         if(log.isEmpty()) {
@@ -191,19 +193,24 @@ public class DirectionActivity extends AppCompatActivity {
         }
         else if(animalIndex == log.size()) {
             nextBtn.setText("Next Animal");
-            animalIndex--;
+            animalIndex = animalIndex - 2;
             destination.setText(log.get(animalIndex));
         }
         else {
             animalIndex--;
             destination.setText(log.get(animalIndex));
         }
+        if(animalIndex < log.size() - 1) {
+            skipBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     void onSkipAnimalClicked(View view) {
 
         int nextAnimal = animalIndex + 1;
-        log.remove(nextAnimal);
+        sortedPath.remove(nextAnimal);
+        log = planPath(sortedPath, vInfo, eInfo, g);
+
 
         // if on last animal
         if(animalIndex==log.size()-1){
@@ -211,7 +218,6 @@ public class DirectionActivity extends AppCompatActivity {
             nextBtn.setText("DONE");
             skipBtn.setVisibility(View.INVISIBLE);
         }
-        // replan method goes here
     }
 
     public static Context getContext() {
