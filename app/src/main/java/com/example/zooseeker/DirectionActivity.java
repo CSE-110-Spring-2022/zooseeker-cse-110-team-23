@@ -24,6 +24,7 @@ public class DirectionActivity extends AppCompatActivity {
 
     private Button nextBtn;
     private Button prevBtn;
+    private Button skipBtn;
     private TextView destination;
 
     private ArrayList<String> log;
@@ -45,8 +46,10 @@ public class DirectionActivity extends AppCompatActivity {
 
         nextBtn = findViewById(R.id.next_btn);
         prevBtn = findViewById(R.id.prev_animal_btn );
+        skipBtn = findViewById(R.id.skip_next_btn);
         prevBtn.setOnClickListener(this::onPrevAnimalClicked);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
+        skipBtn.setOnClickListener(this::onSkipAnimalClicked);
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
         List<AnimalListItem> sortedPath = sortPath(animalPlanItems,g);
         log = planPath(sortedPath, vInfo, eInfo, g);
@@ -166,12 +169,14 @@ public class DirectionActivity extends AppCompatActivity {
             animalIndex++;
             destination.setText(log.get(animalIndex));
             prevBtn.setVisibility(View.VISIBLE);
+
+            if(animalIndex==log.size()-1){
+                nextBtn.setText("DONE");
+                skipBtn.setVisibility(View.INVISIBLE);
+                animalIndex++;
+            }
         }
-        else if(animalIndex==log.size()-1){
-            nextBtn.setText("DONE");
-            animalIndex++;
-        }
-        else {
+        else if (animalIndex > log.size()-1){
             finish();
         }
 
@@ -193,6 +198,20 @@ public class DirectionActivity extends AppCompatActivity {
             animalIndex--;
             destination.setText(log.get(animalIndex));
         }
+    }
+
+    void onSkipAnimalClicked(View view) {
+
+        int nextAnimal = animalIndex + 1;
+        log.remove(nextAnimal);
+
+        // if on last animal
+        if(animalIndex==log.size()-1){
+            ++animalIndex;
+            nextBtn.setText("DONE");
+            skipBtn.setVisibility(View.INVISIBLE);
+        }
+        // replan method goes here
     }
 
     public static Context getContext() {
