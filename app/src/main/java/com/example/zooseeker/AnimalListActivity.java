@@ -26,9 +26,8 @@ import java.util.Map;
 public class AnimalListActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     public AnimalListViewModel viewModel;
-    private EditText newTodoText;
 
-    private Button addTodoButton;
+    private Button clearBtn;
     private Button backButton;
     private Button getDirBtn;
     private Button deleteButton;
@@ -49,8 +48,6 @@ public class AnimalListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        this.newTodoText = this.findViewById(R.id.new_todo_text);
-        this.addTodoButton = this.findViewById(R.id.add_todo_btn);
         this.deleteButton = this.findViewById(R.id.delete_btn);
         this.getDirBtn = this.findViewById(R.id.get_direction_btn);
 

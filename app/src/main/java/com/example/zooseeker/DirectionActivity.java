@@ -11,9 +11,7 @@ import android.widget.TextView;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +23,16 @@ public class DirectionActivity extends AppCompatActivity {
     private Button nextBtn;
     private Button prevBtn;
     private Button skipBtn;
+    private Button stepBackBtn;
     private TextView destination;
 
     private ArrayList<String> log;
+    private static ArrayList<String> logReversed;
 
     private Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<AnimalListItem> sortedPath;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +43,15 @@ public class DirectionActivity extends AppCompatActivity {
         vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
         eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
         g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
-
         nextBtn = findViewById(R.id.next_btn);
         prevBtn = findViewById(R.id.prev_animal_btn );
         skipBtn = findViewById(R.id.skip_next_btn);
+        stepBackBtn = findViewById(R.id.step_back);
 
         prevBtn.setOnClickListener(this::onPrevAnimalClicked);
         nextBtn.setOnClickListener(this::onNextAnimalClicked);
         skipBtn.setOnClickListener(this::onSkipAnimalClicked);
+        stepBackBtn.setOnClickListener(this::onStepBackAnimalClicked);
         List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
         sortedPath = sortPath(animalPlanItems,g);
         log = planPath(sortedPath, vInfo, eInfo, g);
@@ -121,13 +121,17 @@ public class DirectionActivity extends AppCompatActivity {
 
 
 
-        ArrayList<String> log = new ArrayList<>(0);
+        ArrayList<String> log_local = new ArrayList<>(0);
+        ArrayList<String> logReversed_local = new ArrayList<>(0);
 
         String prev = "entrance_exit_gate";
         for(int i=0; i<animalPlanItems.size(); i++) {
             path = DijkstraShortestPath.findPathBetween(g,start, goal);
             int j = 1;
+            int k = path.getEdgeList().size();
+
             String b = "";
+            String b_rev = "";
 
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
                 // if the target of next edge is the prev place
@@ -138,8 +142,9 @@ public class DirectionActivity extends AppCompatActivity {
                     String street = eInfo.get(e.getId()).street;
 
                     b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
+                    b_rev = k + ". Walk " + length + " meters along " + street + " from " + to + " to " + from + "\n" +b_rev + "\n";
                     j++;
-
+                    k--;
                     // update the name of the previous exhibit
                     prev = to;
                 }
@@ -150,20 +155,25 @@ public class DirectionActivity extends AppCompatActivity {
                     String street = eInfo.get(e.getId()).street;
 
                     b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
+                    b_rev = k + ". Walk " + length + " meters along " + street + " from " + to + " to " + from + "\n" + b_rev+ "\n";
                     j++;
+                    k--;
 
                     // update the name of the previous exhibit
                     prev = to;
                 }
             }
-            log.add(b);
+            logReversed_local.add(b_rev);
+            log_local.add(b);
             start = animalPlanItems.get(i).animal_id;
             if((i+1) == animalPlanItems.size()) {       // if reached end of animals list
                 break;
             }
             goal = animalPlanItems.get(i+1).animal_id;
         }
-        return log;
+
+        logReversed = logReversed_local;
+        return log_local;
     }
 
     void onNextAnimalClicked(View view) {
@@ -185,11 +195,47 @@ public class DirectionActivity extends AppCompatActivity {
 
     }
 
-    void onPrevAnimalClicked(View view) {
+//    String DijkstraPlan(String start, String goal) {
+//        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g,start, goal);
+//        String b = "";
+//        //String prev = goal;
+//
+//        // J is the 1. 2. of the direction. Not looping
+//        int j = 1;
+//        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+//            // if the target of next edge is the prev place
+//            String to = "";
+//            String from = "";
+//            if(vInfo.get(g.getEdgeSource(e).toString()).name == to) {
+//                from = vInfo.get(g.getEdgeSource(e).toString()).name;
+//                to = vInfo.get(g.getEdgeTarget(e).toString()).name;
+//            }
+//            else {
+//                to = vInfo.get(g.getEdgeSource(e).toString()).name;
+//                from = vInfo.get(g.getEdgeTarget(e).toString()).name;
+//            }
+//
+//            double length = g.getEdgeWeight(e);
+//            String street = eInfo.get(e.getId()).street;
+//
+//            b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
+//            j++;
+//
+//            // update the name of the previous exhibit
+//        }
+//        return b;
+//    }
+
+    void onStepBackAnimalClicked(View view) {
         if(animalIndex == 1) {
             prevBtn.setVisibility(View.INVISIBLE);
+//            String path = DijkstraPlan(sortedPath.get(animalIndex).animal_id, sortedPath.get(animalIndex-1).animal_id);
+//            log.set(animalIndex, path);
+
             animalIndex--;
             destination.setText(log.get(animalIndex));
+
+            //destination.setText(log.get(animalIndex));
         }
         else if(animalIndex == log.size()) {
             nextBtn.setText("Next Animal");
@@ -201,6 +247,31 @@ public class DirectionActivity extends AppCompatActivity {
             destination.setText(log.get(animalIndex));
         }
         if(animalIndex < log.size() - 1) {
+            skipBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    void onPrevAnimalClicked(View view) {
+        if(animalIndex == 1) {
+            prevBtn.setVisibility(View.INVISIBLE);
+//            String path = DijkstraPlan(sortedPath.get(animalIndex).animal_id, sortedPath.get(animalIndex-1).animal_id);
+//            log.set(animalIndex, path);
+
+            animalIndex--;
+            destination.setText(logReversed.get(animalIndex));
+
+            //destination.setText(log.get(animalIndex));
+        }
+        else if(animalIndex == logReversed.size()) {
+            nextBtn.setText("Next Animal");
+            animalIndex = animalIndex - 2;
+            destination.setText(logReversed.get(animalIndex));
+        }
+        else {
+            animalIndex--;
+            destination.setText(logReversed.get(animalIndex));
+        }
+        if(animalIndex < logReversed.size() - 1) {
             skipBtn.setVisibility(View.VISIBLE);
         }
     }
