@@ -7,24 +7,15 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Button addAnimalsButton;
@@ -34,13 +25,53 @@ public class MainActivity extends AppCompatActivity {
     public AnimalListViewModel viewModel;
     private TextView confirmText;
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Bind UI Element with field variables
+        InitializeUIElements();
+
+        // Load Graph
+        ParsingAssets();
+
+        ViewModelSetUp();
+
+        // Parse From Database
+        List<String> animalNames = parseDatabase();
+
+        // Remove entrance and exit node
+        AnimalListCleanUp(animalNames);
+        AdapterSetUp(animalNames);
+    }
+
+    private void ParsingAssets() {
+        animalParse = GraphListItem.loadJSON(this,"sample_node_info.json");
+    }
+
+    private void ViewModelSetUp() {
+        viewModel = new ViewModelProvider(this)
+                .get(AnimalListViewModel.class);
+        viewModel.setSize(this);
+    }
+
+    private void AdapterSetUp(List<String> animalNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, animalNames);
+        searchBar.setAdapter(adapter);
+    }
+
+    private void AnimalListCleanUp(List<String> animalNames) {
+        animalNames.remove("Entrance Plaza");
+        animalNames.remove("Entrance and Exit Gate");
+    }
+
+    private void InitializeUIElements() {
+        this.searchButton = this.findViewById(R.id.search_btn);
+        this.searchBar = findViewById(R.id.search_bar);
+        this.confirmText = findViewById(R.id.confirmText);
         this.addAnimalsButton = findViewById(R.id.plan_btn);
         this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,33 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        this.searchButton.setOnClickListener(this::onAddClicked);
+    }
 
-        this.searchButton = this.findViewById(R.id.search_btn);
-        this.searchBar = findViewById(R.id.search_bar);
-        this.confirmText = findViewById(R.id.confirmText);
-
-        animalParse = GraphListItem.loadJSON(this,"sample_node_info.json");
-
-        searchButton.setOnClickListener(this::onAddClicked);
-
-        viewModel = new ViewModelProvider(this)
-                .get(AnimalListViewModel.class);
-        viewModel.setSize(this);
-
-        List<String> animalNames = new ArrayList<>();
-
+    private ArrayList<String> parseDatabase() {
+        ArrayList<String> animalNames = new ArrayList<>();
         for(int i = 0; i < animalParse.size(); i++) {
             animalNames.add(animalParse.get(i).name);
         }
-
-        animalNames.remove("Entrance Plaza");
-        animalNames.remove("Entrance and Exit Gate");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, animalNames);
-        searchBar.setAdapter(adapter);
+        return animalNames;
     }
-
 
     void onAddClicked(View view) {
         String text = searchBar.getText().toString();
