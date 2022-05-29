@@ -40,28 +40,50 @@ public class DirectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
 
-        vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
-        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
-        nextBtn = findViewById(R.id.next_btn);
-        prevBtn = findViewById(R.id.prev_animal_btn );
-        skipBtn = findViewById(R.id.skip_next_btn);
-        stepBackBtn = findViewById(R.id.step_back);
+        LoadAssets();
+        InitializeUIElements();
+        UIElementFunctionalitySetUp();
 
-        prevBtn.setOnClickListener(this::onPrevAnimalClicked);
-        nextBtn.setOnClickListener(this::onNextAnimalClicked);
-        skipBtn.setOnClickListener(this::onSkipAnimalClicked);
-        stepBackBtn.setOnClickListener(this::onStepBackAnimalClicked);
-        List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+        List<AnimalListItem> animalPlanItems = LoadAnimalListFromDataBase();
         sortedPath = sortPath(animalPlanItems,g);
         log = planPath(sortedPath, vInfo, eInfo, g);
-        destination = findViewById(R.id.destination_text);
+
+        // Remind User when nothing is planned
+        SanityCheck();
+    }
+
+    private void SanityCheck() {
         if(log.isEmpty()) {
             destination.setText("Plan Something");
         }
         else {
             destination.setText(log.get(animalIndex));
         }
+    }
+
+    private List<AnimalListItem> LoadAnimalListFromDataBase() {
+        return AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+    }
+
+    private void UIElementFunctionalitySetUp() {
+        prevBtn.setOnClickListener(this::onPrevAnimalClicked);
+        nextBtn.setOnClickListener(this::onNextAnimalClicked);
+        skipBtn.setOnClickListener(this::onSkipAnimalClicked);
+        stepBackBtn.setOnClickListener(this::onStepBackAnimalClicked);
+    }
+
+    private void LoadAssets() {
+        vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
+        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
+    }
+
+    private void InitializeUIElements() {
+        nextBtn = findViewById(R.id.next_btn);
+        prevBtn = findViewById(R.id.prev_animal_btn );
+        skipBtn = findViewById(R.id.skip_next_btn);
+        stepBackBtn = findViewById(R.id.step_back);
+        destination = findViewById(R.id.destination_text);
     }
 
     public static List<AnimalListItem> sortPath(List<AnimalListItem> unsortedAnimalList,
@@ -118,8 +140,6 @@ public class DirectionActivity extends AppCompatActivity {
         }
         goal = animalPlanItems.get(0).animal_id;        // save first animal in plan as goal
         GraphPath<String, IdentifiedWeightedEdge> path;
-
-
 
         ArrayList<String> log_local = new ArrayList<>(0);
         ArrayList<String> logReversed_local = new ArrayList<>(0);
@@ -191,51 +211,13 @@ public class DirectionActivity extends AppCompatActivity {
         else if (animalIndex > log.size()-1){
             finish();
         }
-
-
     }
-
-//    String DijkstraPlan(String start, String goal) {
-//        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g,start, goal);
-//        String b = "";
-//        //String prev = goal;
-//
-//        // J is the 1. 2. of the direction. Not looping
-//        int j = 1;
-//        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-//            // if the target of next edge is the prev place
-//            String to = "";
-//            String from = "";
-//            if(vInfo.get(g.getEdgeSource(e).toString()).name == to) {
-//                from = vInfo.get(g.getEdgeSource(e).toString()).name;
-//                to = vInfo.get(g.getEdgeTarget(e).toString()).name;
-//            }
-//            else {
-//                to = vInfo.get(g.getEdgeSource(e).toString()).name;
-//                from = vInfo.get(g.getEdgeTarget(e).toString()).name;
-//            }
-//
-//            double length = g.getEdgeWeight(e);
-//            String street = eInfo.get(e.getId()).street;
-//
-//            b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
-//            j++;
-//
-//            // update the name of the previous exhibit
-//        }
-//        return b;
-//    }
 
     void onStepBackAnimalClicked(View view) {
         if(animalIndex == 1) {
             prevBtn.setVisibility(View.INVISIBLE);
-//            String path = DijkstraPlan(sortedPath.get(animalIndex).animal_id, sortedPath.get(animalIndex-1).animal_id);
-//            log.set(animalIndex, path);
-
             animalIndex--;
             destination.setText(log.get(animalIndex));
-
-            //destination.setText(log.get(animalIndex));
         }
         else if(animalIndex == log.size()) {
             nextBtn.setText("Next Animal");
@@ -254,13 +236,8 @@ public class DirectionActivity extends AppCompatActivity {
     void onPrevAnimalClicked(View view) {
         if(animalIndex == 1) {
             prevBtn.setVisibility(View.INVISIBLE);
-//            String path = DijkstraPlan(sortedPath.get(animalIndex).animal_id, sortedPath.get(animalIndex-1).animal_id);
-//            log.set(animalIndex, path);
-
             animalIndex--;
             destination.setText(logReversed.get(animalIndex));
-
-            //destination.setText(log.get(animalIndex));
         }
         else if(animalIndex == logReversed.size()) {
             nextBtn.setText("Next Animal");

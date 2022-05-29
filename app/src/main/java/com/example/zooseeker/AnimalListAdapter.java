@@ -34,6 +34,7 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
         this.onDeleteButtonClicked = onDeleteButtonClicked;
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

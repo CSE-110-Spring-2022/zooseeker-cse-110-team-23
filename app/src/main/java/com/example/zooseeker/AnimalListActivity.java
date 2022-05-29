@@ -51,8 +51,6 @@ public class AnimalListActivity extends AppCompatActivity {
         this.deleteButton = this.findViewById(R.id.delete_btn);
         this.getDirBtn = this.findViewById(R.id.get_direction_btn);
 
-        addTodoButton.setOnClickListener(this::onAddTodoClicked);
-
         adapter.setOnDeleteButtonClicked(viewModel::deleteAnimal);
 
         // Set Get direction button to onclick
@@ -68,14 +66,9 @@ public class AnimalListActivity extends AppCompatActivity {
         });
     }
 
-    void onAddTodoClicked(View view) {
-        String text = newTodoText.getText().toString();
-        newTodoText.setText("");
-        viewModel.createTodo(text,text);
-    }
-
     void onGetDirectionClicked(View view) {
         startActivity(new Intent(this, DirectionActivity.class));
     }
+
 
 }
