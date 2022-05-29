@@ -247,7 +247,7 @@ public class DirectionActivity extends AppCompatActivity {
         if(animalIndex < log.size()-1) {
             animalIndex++;
             destination.setText(log.get(animalIndex));
-            prevBtn.setVisibility(View.VISIBLE);
+            setVisibility(View.VISIBLE);
 
             if(animalIndex==log.size()-1){
                 nextBtn.setText("DONE");
@@ -258,6 +258,11 @@ public class DirectionActivity extends AppCompatActivity {
         else if (end){
             finish();
         }
+    }
+
+    private void setVisibility(int visibility) {
+        prevBtn.setVisibility(visibility);
+        stepBackBtn.setVisibility(visibility);
     }
 
     void onStepBackAnimalClicked(View view) {
@@ -290,7 +295,7 @@ public class DirectionActivity extends AppCompatActivity {
 
     private void Iterate(ArrayList<String> log) {
         if (animalIndex == 1) {
-            prevBtn.setVisibility(View.INVISIBLE);
+            setVisibility(View.INVISIBLE);
             animalIndex--;
             destination.setText(log.get(animalIndex));
         } else if (animalIndex == log.size()-1) {
