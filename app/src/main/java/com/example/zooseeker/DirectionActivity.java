@@ -50,7 +50,7 @@ public class DirectionActivity extends AppCompatActivity {
         UIElementFunctionalitySetUp();
 
         List<AnimalListItem> animalPlanItems = LoadAnimalListFromDataBase();
-        sortedPath = sortPath(animalPlanItems,g);
+        sortedPath = SortPath.sortPath(animalPlanItems, g);
         log = planPath(sortedPath, vInfo, eInfo, g);
 
         // Remind User when nothing is planned
@@ -91,46 +91,6 @@ public class DirectionActivity extends AppCompatActivity {
         stepBackBtn = findViewById(R.id.step_back);
         destination = findViewById(R.id.destination_text);
         briefBtn = findViewById(R.id.show_brief_btn);
-    }
-
-    public static List<AnimalListItem> sortPath(List<AnimalListItem> unsortedAnimalList,
-                                                Graph<String, IdentifiedWeightedEdge> g) {
-        ArrayList<AnimalListItem> sorted = new ArrayList<>();
-        String start = "entrance_exit_gate";
-        AnimalListItem select = new AnimalListItem("","",0);
-
-        // Empty List
-        if(unsortedAnimalList.isEmpty()){
-            return sorted;
-        }
-
-        GraphPath<String, IdentifiedWeightedEdge> path;
-
-        double min = (double)Integer.MAX_VALUE;
-
-        for(AnimalListItem j : unsortedAnimalList) {
-            // Check which animal to go next
-            for (AnimalListItem a : unsortedAnimalList) {
-                path = DijkstraShortestPath.findPathBetween(g, start, a.animal_id);
-                double length = 0;
-                for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-                    length += g.getEdgeWeight(e);
-                }
-                if (length < min && !sorted.contains(a)) {
-                    select = a;
-                    min = length;
-                }
-            }
-            start = select.animal_id;
-            min = (double)Integer.MAX_VALUE;
-
-            // Update sorted
-            sorted.add(select);
-
-        }
-
-
-        return sorted;
     }
 
     public static ArrayList<String> planPath(List<AnimalListItem> animalPlanItems,
