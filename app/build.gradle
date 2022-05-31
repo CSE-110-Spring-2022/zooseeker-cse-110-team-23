@@ -31,6 +31,7 @@ android {
             includeAndroidResources = true
         }
     }
+    namespace 'com.example.zooseeker'
 }
 
 dependencies {

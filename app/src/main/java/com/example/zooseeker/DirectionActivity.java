@@ -125,7 +125,7 @@ public class DirectionActivity extends AppCompatActivity {
             String startName = "";
             String goalName =  "";
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-                if(prev==vInfo.get(g.getEdgeTarget(path.getEdgeList().get(0)).toString()).name) {
+                if(prev==vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name) {
                     startName = vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name;
                 }
                 else {
