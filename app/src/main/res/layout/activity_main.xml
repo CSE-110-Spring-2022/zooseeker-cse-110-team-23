@@ -102,16 +102,15 @@
 
     <TextView
         android:id="@+id/animal_list"
-        android:layout_width="334dp"
-        android:layout_height="257dp"
+        android:layout_width="301dp"
+        android:layout_height="162dp"
         android:text="Animals in the Zoo: \n- Gorillas \n- Alligators \n- Lions \n- Elephant Odyssey \n- Arctic Foxes"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" /><![CDATA[
+        app:layout_constraintVertical_bias="0.76" /><![CDATA[
 
 
 
