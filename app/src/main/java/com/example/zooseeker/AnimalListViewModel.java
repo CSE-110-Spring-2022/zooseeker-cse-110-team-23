@@ -14,6 +14,7 @@ public class AnimalListViewModel extends AndroidViewModel {
     private LiveData<List<AnimalListItem>> animalListItems;
     private final AnimalListItemDao animalListItemDao;
 
+
     public AnimalListViewModel(@NonNull Application application) {
         super(application);
         Context context = getApplication().getApplicationContext();
@@ -37,9 +38,8 @@ public class AnimalListViewModel extends AndroidViewModel {
         animalListItemDao.update(animalListItem);
     }
 
-    public void createTodo(String text, String text2) {
-        int endOfListOrder = animalListItemDao.getOrderForAppend();
-        AnimalListItem newItem = new AnimalListItem(text,text2,endOfListOrder);
+    public void createTodo(String text, String text2, int totalDistance) {
+        AnimalListItem newItem = new AnimalListItem(text,text2,totalDistance);
         animalListItemDao.insert(newItem);
     }
 

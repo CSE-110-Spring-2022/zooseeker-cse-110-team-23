@@ -61,11 +61,13 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
         private final TextView textView;
         private AnimalListItem animalItem;
         private Button deleteButton;
+        private TextView distance;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.animal_item_text);
             this.deleteButton = itemView.findViewById(R.id.delete_btn);
+            this.distance = itemView.findViewById(R.id.distance);
 
             this.textView.setOnFocusChangeListener((view, hasFocus) -> {
                 if (!hasFocus) {
@@ -83,11 +85,11 @@ public class AnimalListAdapter extends RecyclerView.Adapter<AnimalListAdapter.Vi
             return animalItem;
         }
 
-        public void setAnimalItem(AnimalListItem todoItem) {
-            this.animalItem = todoItem;
-            this.textView.setText(todoItem.text);
+        public void setAnimalItem(AnimalListItem animalItem) {
+            this.animalItem = animalItem;
+            this.textView.setText(animalItem.text);
+            this.distance.setText(animalItem.order+"ft");
         }
-
 
     }
 }

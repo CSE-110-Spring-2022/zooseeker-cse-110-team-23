@@ -14,7 +14,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private List<GraphListItem> animalParse;
     public AnimalListViewModel viewModel;
     private TextView confirmText;
+    private static HashMap<String, Integer> totalDistance;
+    private Graph<String, IdentifiedWeightedEdge> g;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -45,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         // Remove entrance and exit node
         AnimalListCleanUp(animalNames);
         AdapterSetUp(animalNames);
+        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
+        calculateDistance(g);
     }
 
     private void ParsingAssets() {
@@ -109,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
-                viewModel.createTodo(text,animalParse.get(i).animal_id); // Change it to id
+                viewModel.createTodo(text, animalParse.get(i).animal_id, totalDistance.get(animalParse.get(i).animal_id)); // Change it to id
                 viewModel.setSize(this);
                 break;
             }
@@ -128,5 +137,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public static HashMap<String, Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g) {
+        String start = "entrance_exit_gate";
+        String goal;
+
+        ArrayList<String> animalIDs = new ArrayList<>();
+
+        animalIDs.add("gorillas");
+        animalIDs.add("gators");
+        animalIDs.add("lions");
+        animalIDs.add("elephant_odyssey");
+        animalIDs.add("arctic_foxes");
+
+        GraphPath<String, IdentifiedWeightedEdge> path;
+
+        totalDistance = new HashMap<>(0);
+
+        for(int i = 0; i < animalIDs.size(); i++) {
+            goal = animalIDs.get(i);
+            path = DijkstraShortestPath.findPathBetween(g, start, goal);
+            int td = 0;
+
+            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                double length = g.getEdgeWeight(e);
+                td += length;
+            }
+            totalDistance.put(animalIDs.get(i), td);
+        }
+
+        return totalDistance;
     }
 }
