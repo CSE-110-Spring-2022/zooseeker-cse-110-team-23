@@ -55,6 +55,11 @@ public class DirectionActivity extends AppCompatActivity {
 
         // Remind User when nothing is planned
         SanityCheck();
+
+        if(log.size() == 1) {
+            skipBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setText("Done");
+        }
     }
 
     private void SanityCheck() {
@@ -79,9 +84,9 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     private void LoadAssets() {
-        vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(this,"sample_edge_info.json");
-        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
+        vInfo = ZooData.loadVertexInfoJSON(this,"exhibit_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(this,"trail_info.json");
+        g = ZooData.loadZooGraphJSON(this,"zoo_graph.json");
     }
 
     private void InitializeUIElements() {
@@ -208,14 +213,12 @@ public class DirectionActivity extends AppCompatActivity {
             animalIndex++;
             destination.setText(log.get(animalIndex));
             setVisibility(View.VISIBLE);
-
-            if(animalIndex==log.size()-1){
-                nextBtn.setText("DONE");
-                skipBtn.setVisibility(View.INVISIBLE);
-                end = true;
-            }
         }
-        else if (end){
+        else if(animalIndex==log.size()-2){
+            nextBtn.setText("DONE");
+            skipBtn.setVisibility(View.INVISIBLE);
+        }
+        else {
             finish();
         }
     }
@@ -226,11 +229,18 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     void onStepBackAnimalClicked(View view) {
+        if(animalIndex == log.size()-1) {
+            nextBtn.setText("Next Animal");
+        }
         Iterate(log);
         DirectionDefaultState();
     }
 
     void onPrevAnimalClicked(View view) {
+        if(animalIndex == log.size()-1) {
+            nextBtn.setText("Next Animal");
+        }
+
         Iterate(logReversed);
         DirectionDefaultState();
     }
@@ -280,7 +290,6 @@ public class DirectionActivity extends AppCompatActivity {
 
         // if on last animal
         if(animalIndex==log.size()-1){
-            ++animalIndex;
             nextBtn.setText("DONE");
             skipBtn.setVisibility(View.INVISIBLE);
         }
