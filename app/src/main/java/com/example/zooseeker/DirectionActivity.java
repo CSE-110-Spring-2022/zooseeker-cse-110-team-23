@@ -31,7 +31,6 @@ public class DirectionActivity extends AppCompatActivity {
     private Button briefBtn;
     private boolean briefFlag;
     private boolean end;
-
     private ArrayList<String> log;
     private static ArrayList<String> logReversed;
     private static ArrayList<String> logConcise;
@@ -206,7 +205,7 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private static String DirectionString(int j, String b, String from, String to, double length, String street) {
+    public static String DirectionString(int j, String b, String from, String to, double length, String street) {
         b += j + ". Walk " + length + " meters along " + street + " from " + from + " to " + to + "\n";
         return b;
     }
@@ -301,5 +300,13 @@ public class DirectionActivity extends AppCompatActivity {
 
     public static Context getContext() {
         return DirectionActivity.context;
+    }
+
+    public ArrayList<String> getLog() {
+        return log;
+    }
+
+    public void setLog(ArrayList<String> log) {
+        this.log = log;
     }
 }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         confirmText.setText("The animal you searched for is not in the zoo.");
+        Log.d("Nothing Found", "Animal Searched is not in the zoo");
         for(int i = 0; i < animalParse.size(); i++) {
             if(animalParse.get(i).name.equals(text) && !animalPlanItemsString.contains(text)) {
                 if("Entrance Plaza".equals(text) || "Entrance and Exit Gate".equals(text)){
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     if(animalParse.get(i).group_id == null) {
                         viewModel.createTodo(text, animalParse.get(i).id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
                         viewModel.setSize(this);
+                        Log.d("Change Size", "Animal Size Increased by 1");
                         break;
                     } else {
                         viewModel.createTodo(text, animalParse.get(i).group_id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             totalDistance.add(distance);
             start = animalPlanItems.get(i).animal_id;
         }
+        Log.d("Calculate Distance", "Calculating Distance");
         return totalDistance;
     }
 }
