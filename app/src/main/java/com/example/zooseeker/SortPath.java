@@ -10,13 +10,13 @@ import java.util.List;
 public class SortPath {
     private static ArrayList<AnimalListItem> sorted;
     private static AnimalListItem select;
-    private static String start;
 
 
     public static List<AnimalListItem> sortPath(List<AnimalListItem> unsortedAnimalList,
-                                                Graph<String, IdentifiedWeightedEdge> g) {
+                                                Graph<String, IdentifiedWeightedEdge> g, String start) {
 
-        SetUp();
+        sorted = new ArrayList<AnimalListItem>();
+        select = new AnimalListItem("", "", 0);
 
         // Empty List
         if (unsortedAnimalList.isEmpty()) {
@@ -52,9 +52,4 @@ public class SortPath {
         return sorted;
     }
 
-    private static void SetUp() {
-        sorted = new ArrayList<AnimalListItem>();
-        start = "entrance_exit_gate";
-        select = new AnimalListItem("", "", 0);
-    }
 }

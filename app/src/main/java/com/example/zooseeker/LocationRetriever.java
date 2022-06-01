@@ -19,8 +19,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 public class LocationRetriever extends FragmentActivity{
-    private Location currentLocation;
+    public Location currentLocation;
     private final PermissionChecker permissionChecker = new PermissionChecker(this);
+
+    public void mockLocation(double lat, double lng) {
+        this.currentLocation.setLatitude(lat);
+        this.currentLocation.setLongitude(lng);
+    }
 
     public void onGetLocation() {
 

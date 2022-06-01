@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<AnimalListItem> sortedPath;
     List<AnimalListItem> animalPlanItems;
+    BetterLocation betterLocation;
+    double lat;
+    double lng;
+    private final PermissionChecker permissionChecker = new PermissionChecker(this);
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -41,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // Location permissions
+//        locationRetriever.onGetLocation();
+
+        betterLocation = new BetterLocation(1.0 ,2.0);
+        betterLocation.setLat(32.72624997716322);
+        betterLocation.setLng(-117.15599314253906);
+
+        lat = betterLocation.getLat();
+        lng = betterLocation.getLng();
 
         // Bind UI Element with field variables
         InitializeUIElements();
@@ -58,9 +74,28 @@ public class MainActivity extends AppCompatActivity {
         AdapterSetUp(animalNames);
         g = ZooData.loadZooGraphJSON(this,"zoo_graph.json");
 
-        // Location permissions
+    }
 
+    private double distance(double lat1, double lng1, double lat2, double lng2) {
+        return Math.pow(Math.pow(Math.abs(lat1 - lat2), 2) + Math.pow(Math.abs(lng1 - lng2), 2),0.5);
+    }
 
+    private AnimalListItem getClosest(BetterLocation betterLocation) {
+        double min = 9999999;
+        AnimalListItem closestAnimal = new AnimalListItem("", "", 0);
+        animalPlanItems = AnimalListDatabase.getSingleton(this).animalListItemDao().getAll();
+        for (AnimalListItem a : animalPlanItems) {
+            String currentAnimal = a.animal_id;
+            for (ZooData.VertexInfo v : animalParse) {
+                if(currentAnimal.equals(v.id)) {
+                    if(min > distance(betterLocation.getLat(), betterLocation.getLng(), v.lat, v.lng)) {
+                        min = distance(betterLocation.getLat(), betterLocation.getLng(), v.lat, v.lng);
+                        closestAnimal = a;
+                    }
+                }
+            }
+        }
+        return closestAnimal;
     }
 
     private void ParsingAssets() {
@@ -94,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(context).animalListItemDao().getAll();
-                sortedPath = SortPath.sortPath(animalPlanItems, g);
+                sortedPath = SortPath.sortPath(animalPlanItems, g, getClosest(betterLocation).animal_id);
                 calculateDistance(g, sortedPath);
                 for(int i=0; i < sortedPath.size(); ++i) {
                     for(int j=0; j < animalPlanItems.size(); ++j) {

@@ -52,7 +52,7 @@ public class DirectionActivity extends AppCompatActivity {
         UIElementFunctionalitySetUp();
 
         List<AnimalListItem> animalPlanItems = LoadAnimalListFromDataBase();
-        sortedPath = SortPath.sortPath(animalPlanItems, g);
+        sortedPath = SortPath.sortPath(animalPlanItems, g, "entrance_exit_gate");
         log = planPath(sortedPath, vInfo, eInfo, g);
 
         // Remind User when nothing is planned
