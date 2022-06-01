@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView confirmText;
     private static HashMap<String, Integer> totalDistance;
     private Graph<String, IdentifiedWeightedEdge> g;
+    private List<AnimalListItem> sortedPath;
+    List<AnimalListItem> animalPlanItems;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         // Location permissions
 
 
-        //calculateDistance(g);
     }
 
     private void ParsingAssets() {
@@ -89,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sortedPath = SortPath.sortPath(animalPlanItems, g);
+                calculateDistance(g, sortedPath);
                 startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
                 finish();
             }
@@ -152,34 +156,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public static HashMap<String, Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g) {
-//        String start = "entrance_exit_gate";
-//        String goal;
-//
-//        ArrayList<String> animalIDs = new ArrayList<>();
-//
-//        animalIDs.add("gorillas");
-//        animalIDs.add("gators");
-//        animalIDs.add("lions");
-//        animalIDs.add("elephant_odyssey");
-//        animalIDs.add("arctic_foxes");
-//
-//        GraphPath<String, IdentifiedWeightedEdge> path;
-//
-//        totalDistance = new HashMap<>(0);
-//
-//        for(int i = 0; i < animalIDs.size(); i++) {
-//            goal = animalIDs.get(i);
-//            path = DijkstraShortestPath.findPathBetween(g, start, goal);
-//            int td = 0;
-//
-//            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-//                double length = g.getEdgeWeight(e);
-//                td += length;
-//            }
-//            totalDistance.put(animalIDs.get(i), td);
-//        }
-//
-//        return totalDistance;
-//    }
+    public static HashMap<String, Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g, List<AnimalListItem> animalPlanItems) {
+        String start = "entrance_exit_gate";
+        String goal;
+
+        GraphPath<String, IdentifiedWeightedEdge> path;
+
+        totalDistance = new HashMap<>(0);
+
+        int distance = 0;
+        for(int i = 0; i < animalPlanItems.size(); i++) {
+            goal = animalPlanItems.get(i).animal_id;
+            path = DijkstraShortestPath.findPathBetween(g, start, goal);
+
+            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                double length = g.getEdgeWeight(e);
+                distance += length;
+            }
+            totalDistance.put(animalPlanItems.get(i).animal_id, distance);
+            start = animalPlanItems.get(i).animal_id;
+        }
+
+        return totalDistance;
+    }
 }
