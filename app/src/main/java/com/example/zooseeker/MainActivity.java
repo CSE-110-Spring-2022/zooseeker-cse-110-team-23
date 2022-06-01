@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private List<ZooData.VertexInfo> animalParse;
     public AnimalListViewModel viewModel;
     private TextView confirmText;
-    private static HashMap<String, Integer> totalDistance;
+    private static ArrayList<Integer> totalDistance;
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<AnimalListItem> sortedPath;
     List<AnimalListItem> animalPlanItems;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitializeUIElements() {
+        Context context = this;
         this.searchButton = this.findViewById(R.id.search_btn);
         this.searchBar = findViewById(R.id.search_bar);
         this.confirmText = findViewById(R.id.confirmText);
@@ -91,8 +93,16 @@ public class MainActivity extends AppCompatActivity {
         this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(context).animalListItemDao().getAll();
                 sortedPath = SortPath.sortPath(animalPlanItems, g);
                 calculateDistance(g, sortedPath);
+                for(int i=0; i < sortedPath.size(); ++i) {
+                    for(int j=0; j < animalPlanItems.size(); ++j) {
+                        if(animalPlanItems.get(j).animal_id.equals(sortedPath.get(i).animal_id)) {
+                            viewModel.updateOrder(animalPlanItems.get(j), totalDistance.get(i));
+                        }
+                    }
+                }
                 startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
                 finish();
             }
@@ -129,10 +139,17 @@ public class MainActivity extends AppCompatActivity {
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
                 if(animalParse.get(i).kind == ZooData.VertexInfo.Kind.EXHIBIT) {
-                    viewModel.createTodo(text, animalParse.get(i).id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
-                    viewModel.setSize(this);
-                    break;
-                } else
+                    if(animalParse.get(i).group_id == null) {
+                        viewModel.createTodo(text, animalParse.get(i).id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
+                        viewModel.setSize(this);
+                        break;
+                    } else {
+                        viewModel.createTodo(text, animalParse.get(i).group_id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
+                        viewModel.setSize(this);
+                        break;
+                    }
+                }
+                    else
                 {
                     confirmText.setText("Not an exhibit.");
                 }
@@ -156,13 +173,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static HashMap<String, Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g, List<AnimalListItem> animalPlanItems) {
+    public static ArrayList<Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g, List<AnimalListItem> animalPlanItems) {
         String start = "entrance_exit_gate";
         String goal;
 
         GraphPath<String, IdentifiedWeightedEdge> path;
 
-        totalDistance = new HashMap<>(0);
+        totalDistance = new ArrayList<>(0);
 
         int distance = 0;
         for(int i = 0; i < animalPlanItems.size(); i++) {
@@ -173,10 +190,9 @@ public class MainActivity extends AppCompatActivity {
                 double length = g.getEdgeWeight(e);
                 distance += length;
             }
-            totalDistance.put(animalPlanItems.get(i).animal_id, distance);
+            totalDistance.add(distance);
             start = animalPlanItems.get(i).animal_id;
         }
-
         return totalDistance;
     }
 }

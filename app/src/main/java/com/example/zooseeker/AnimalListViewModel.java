@@ -33,6 +33,11 @@ public class AnimalListViewModel extends AndroidViewModel {
         animalListItems = animalListItemDao.getAllAlive();
     }
 
+    public void updateOrder(AnimalListItem animalListItem, int newOrder) {
+        animalListItem.order = newOrder;
+        animalListItemDao.update(animalListItem);
+    }
+
     public void updateText(AnimalListItem animalListItem, String newText) {
         animalListItem.text = newText;
         animalListItemDao.update(animalListItem);

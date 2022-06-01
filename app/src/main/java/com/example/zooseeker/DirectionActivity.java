@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.jgrapht.Graph;
@@ -26,6 +27,7 @@ public class DirectionActivity extends AppCompatActivity {
     private Button skipBtn;
     private Button stepBackBtn;
     private TextView destination;
+    private ScrollView direction_scroll;
     private Button briefBtn;
     private boolean briefFlag;
     private boolean end;
@@ -95,6 +97,7 @@ public class DirectionActivity extends AppCompatActivity {
         skipBtn = findViewById(R.id.skip_next_btn);
         stepBackBtn = findViewById(R.id.step_back);
         destination = findViewById(R.id.destination_text);
+        direction_scroll = findViewById(R.id.direction_scroll);
         briefBtn = findViewById(R.id.show_brief_btn);
     }
 
@@ -129,6 +132,7 @@ public class DirectionActivity extends AppCompatActivity {
 
             String startName = "";
             String goalName =  "";
+
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
                 if(prev==vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name) {
                     startName = vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name;

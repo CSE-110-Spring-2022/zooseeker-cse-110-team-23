@@ -28,20 +28,23 @@ public class ZooData {
             // from the strings in our JSON to this Enum.
             @SerializedName("gate") GATE,
             @SerializedName("exhibit") EXHIBIT,
-            @SerializedName("intersection") INTERSECTION
+            @SerializedName("intersection") INTERSECTION,
+            @SerializedName("exhibit_group") EXHIBIT_GROUP
         }
 
         public String id;
         public Kind kind;
+        public String group_id;
         public String name;
         public List<String> tags;
         public double lat;
         public double lng;
 
-        VertexInfo(String name, String animal_id, Kind kind, List<String> tags, double lat, double lng) {
+        VertexInfo(String name, String animal_id, Kind kind, String group_id, List<String> tags, double lat, double lng) {
             this.name = name;
             this.id = animal_id;
             this.kind = kind;
+            this.group_id = group_id;
             this.tags = tags;
             this.lat = lat;
             this.lng = lng;
@@ -161,7 +164,7 @@ public class ZooData {
             //ZooData.loadVertexInfoJSON("sample_node_info.json");
 
             for (String name : vInfo.keySet()) {
-                VertexInfo animal = new VertexInfo(vInfo.get(name).name, vInfo.get(name).id, vInfo.get(name).kind, vInfo.get(name).tags, vInfo.get(name).lat, vInfo.get(name).lng);
+                VertexInfo animal = new VertexInfo(vInfo.get(name).name, vInfo.get(name).id, vInfo.get(name).kind, vInfo.get(name).group_id, vInfo.get(name).tags, vInfo.get(name).lat, vInfo.get(name).lng);
                 theList.add(animal);
             }
             return theList;
