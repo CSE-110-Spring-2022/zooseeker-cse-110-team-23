@@ -100,26 +100,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.421" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/animal_list"-->
-<!--        android:layout_width="301dp"-->
-<!--        android:layout_height="162dp"-->
-<!--        android:text="Animals in the Zoo: \n- Gorillas \n- Alligators \n- Lions \n- Elephant Odyssey \n- Arctic Foxes"-->
-<!--        android:textSize="20dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.76" />-->
-<!--    <![CDATA[-->
+    <TextView
+        android:id="@+id/animal_list"
+        android:layout_width="329dp"
+        android:layout_height="186dp"
+        android:text="Animals in the Zoo:\nKoi Fish, Flamingos, Capuchin Monkeys, Gorillas, Orangutans, Siamangs, Toucan, Blue Capped Motmot, Spoonbill, Hippos, Crocodiles, Bali Mynah, Emerald Dove"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.76" />
+    <![CDATA[
 
 
 
 
 
-<!--=======-->
-<!--    >>>>>>> 51145135bd957c5a0fa44a896e873ceab09d887f-->
+=======
+    >>>>>>> 51145135bd957c5a0fa44a896e873ceab09d887f
 
 
-<!--]]>-->
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
