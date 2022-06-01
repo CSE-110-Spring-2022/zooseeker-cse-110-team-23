@@ -41,7 +41,7 @@ public class GetDirectionUnitTest {
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
         ArrayList<AnimalListItem> theList = new ArrayList<>(0);
 
-        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g);
+        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g, "entrance_exit_gate");
         ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
         assertEquals(log.size(),0);
     }
@@ -83,7 +83,7 @@ public class GetDirectionUnitTest {
         ArrayList<AnimalListItem> theList = new ArrayList<>(0);
         theList.add(new AnimalListItem("Gorillas","gorillas",0));
 
-        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g);
+        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g, "entrance_exit_gate");
 
         ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
         assertEquals(theList2.get(0).animal_id, "gorillas");
@@ -100,7 +100,7 @@ public class GetDirectionUnitTest {
         theList.add(new AnimalListItem("Alligators","gators",0));
         theList.add(new AnimalListItem("Arctic Foxes","arctic_foxes",0));
 
-        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g);
+        List<AnimalListItem> theList2 = SortPath.sortPath(theList, g, "entrance_exit_gate");
 
         ArrayList<String> log = DirectionActivity.planPath(theList2, vInfo, eInfo, g);
         assertEquals(theList2.get(0).animal_id, "gators");
