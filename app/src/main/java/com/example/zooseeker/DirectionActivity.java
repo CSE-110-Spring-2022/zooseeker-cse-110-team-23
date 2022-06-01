@@ -130,16 +130,16 @@ public class DirectionActivity extends AppCompatActivity {
             String b = "";
             String b_rev = "";
 
-            String startName = "";
+            String startName = "Entrance and Exit Gate";
             String goalName =  "";
 
+            for (AnimalListItem a : animalPlanItems) {
+                if(a.animal_id.equals(start)) {
+                    startName = a.text;
+                }
+            }
+
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-                if(prev==vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name) {
-                    startName = vInfo.get(g.getEdgeSource(path.getEdgeList().get(0)).toString()).name;
-                }
-                else {
-                    startName = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(0)).toString()).name;
-                }
 
                 // if the target of next edge is the prev place
                 if(prev == vInfo.get(g.getEdgeTarget(e).toString()).name) {
