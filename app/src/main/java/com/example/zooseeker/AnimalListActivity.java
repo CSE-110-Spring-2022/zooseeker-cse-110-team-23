@@ -50,6 +50,9 @@ public class AnimalListActivity extends AppCompatActivity {
 
         this.deleteButton = this.findViewById(R.id.delete_btn);
         this.getDirBtn = this.findViewById(R.id.get_direction_btn);
+        this.clearBtn = this.findViewById(R.id.clear_btn);
+
+        clearBtn.setOnClickListener(viewModel::smash);
 
         adapter.setOnDeleteButtonClicked(viewModel::deleteAnimal);
 

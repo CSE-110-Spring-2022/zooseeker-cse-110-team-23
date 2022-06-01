@@ -2,6 +2,7 @@ package com.example.zooseeker;
 
 import android.app.Application;
 import android.content.Context;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -56,5 +57,10 @@ public class AnimalListViewModel extends AndroidViewModel {
         EditText listCounter = view.findViewById(R.id.list_counter);
         String s = Integer.toString(animalListItemDao.getSize());
         listCounter.setText(s);
+    }
+
+
+    public void smash(View view) {
+        animalListItemDao.nukeTable();
     }
 }
