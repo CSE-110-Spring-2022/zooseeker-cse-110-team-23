@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,11 +27,14 @@ public class MainActivity extends AppCompatActivity {
     private Button addAnimalsButton;
     private ImageButton searchButton;
     private AutoCompleteTextView searchBar;
-    private List<GraphListItem> animalParse;
+    private List<ZooData.VertexInfo> animalParse;
     public AnimalListViewModel viewModel;
     private TextView confirmText;
-    private static HashMap<String, Integer> totalDistance;
+    private static ArrayList<Integer> totalDistance;
     private Graph<String, IdentifiedWeightedEdge> g;
+    private List<AnimalListItem> sortedPath;
+    List<AnimalListItem> animalPlanItems;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -52,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
         // Remove entrance and exit node
         AnimalListCleanUp(animalNames);
         AdapterSetUp(animalNames);
-        g = ZooData.loadZooGraphJSON(this,"sample_zoo_graph.json");
-        calculateDistance(g);
+        g = ZooData.loadZooGraphJSON(this,"zoo_graph.json");
+
+        // Location permissions
+
+
     }
 
     private void ParsingAssets() {
-        animalParse = GraphListItem.loadJSON(this,"sample_node_info.json");
+        animalParse = ZooData.loadJSON(this,"exhibit_info.json");
     }
 
     private void ViewModelSetUp() {
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitializeUIElements() {
+        Context context = this;
         this.searchButton = this.findViewById(R.id.search_btn);
         this.searchBar = findViewById(R.id.search_bar);
         this.confirmText = findViewById(R.id.confirmText);
@@ -85,6 +93,16 @@ public class MainActivity extends AppCompatActivity {
         this.addAnimalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<AnimalListItem> animalPlanItems = AnimalListDatabase.getSingleton(context).animalListItemDao().getAll();
+                sortedPath = SortPath.sortPath(animalPlanItems, g);
+                calculateDistance(g, sortedPath);
+                for(int i=0; i < sortedPath.size(); ++i) {
+                    for(int j=0; j < animalPlanItems.size(); ++j) {
+                        if(animalPlanItems.get(j).animal_id.equals(sortedPath.get(i).animal_id)) {
+                            viewModel.updateOrder(animalPlanItems.get(j), totalDistance.get(i));
+                        }
+                    }
+                }
                 startActivity(new Intent(MainActivity.this, AnimalListActivity.class));
                 finish();
             }
@@ -95,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> parseDatabase() {
         ArrayList<String> animalNames = new ArrayList<>();
         for(int i = 0; i < animalParse.size(); i++) {
-            animalNames.add(animalParse.get(i).name);
+            if(animalParse.get(i).kind == ZooData.VertexInfo.Kind.EXHIBIT) {
+                animalNames.add(animalParse.get(i).name);
+            }
         }
         return animalNames;
     }
@@ -118,9 +138,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 searchBar.setText("");
                 confirmText.setText("The animal you searched for is added into your planner.");
-                viewModel.createTodo(text, animalParse.get(i).animal_id, totalDistance.get(animalParse.get(i).animal_id)); // Change it to id
-                viewModel.setSize(this);
-                break;
+                if(animalParse.get(i).kind == ZooData.VertexInfo.Kind.EXHIBIT) {
+                    if(animalParse.get(i).group_id == null) {
+                        viewModel.createTodo(text, animalParse.get(i).id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
+                        viewModel.setSize(this);
+                        break;
+                    } else {
+                        viewModel.createTodo(text, animalParse.get(i).group_id, 0);//totalDistance.get(animalParse.get(i).id)); // Change it to id
+                        viewModel.setSize(this);
+                        break;
+                    }
+                }
+                    else
+                {
+                    confirmText.setText("Not an exhibit.");
+                }
             }
             else if(animalPlanItemsString.contains(text)) {
                 confirmText.setText("Already Added");
@@ -131,7 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         confirmText.setText("Please enter the name of the animal.");
                         break;
                     }
-                    suggestion += "\n" + animalParse.get(i).name;
+                    if(animalParse.get(i).kind == ZooData.VertexInfo.Kind.EXHIBIT) {
+                        suggestion += "\n" + animalParse.get(i).name;
+                    }
                     confirmText.setText("Did you mean to search for any of the following: " + suggestion);
                     break;
                 }
@@ -139,34 +173,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static HashMap<String, Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g) {
+    public static ArrayList<Integer> calculateDistance(Graph<String, IdentifiedWeightedEdge> g, List<AnimalListItem> animalPlanItems) {
         String start = "entrance_exit_gate";
         String goal;
 
-        ArrayList<String> animalIDs = new ArrayList<>();
-
-        animalIDs.add("gorillas");
-        animalIDs.add("gators");
-        animalIDs.add("lions");
-        animalIDs.add("elephant_odyssey");
-        animalIDs.add("arctic_foxes");
-
         GraphPath<String, IdentifiedWeightedEdge> path;
 
-        totalDistance = new HashMap<>(0);
+        totalDistance = new ArrayList<>(0);
 
-        for(int i = 0; i < animalIDs.size(); i++) {
-            goal = animalIDs.get(i);
+        int distance = 0;
+        for(int i = 0; i < animalPlanItems.size(); i++) {
+            goal = animalPlanItems.get(i).animal_id;
             path = DijkstraShortestPath.findPathBetween(g, start, goal);
-            int td = 0;
 
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
                 double length = g.getEdgeWeight(e);
-                td += length;
+                distance += length;
             }
-            totalDistance.put(animalIDs.get(i), td);
+            totalDistance.add(distance);
+            start = animalPlanItems.get(i).animal_id;
         }
-
         return totalDistance;
     }
 }
