@@ -3,6 +3,8 @@ zooseeker-cse-110-team-23 created by GitHub Classroom
 
 # Overview
 - This project is a software project designed using agile with the obejctive to develop an app for visitors at the San Diego zoo.
+- Programming Language Used: Java
+- Scope: 6 weeks
 
 # Members
 - There are 6 people in our team in this project. 
